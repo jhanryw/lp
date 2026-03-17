@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A Qarvon mapeia o lucro cessante da sua loja e constrói o sistema que transforma marketing em receita previsível. Peça sua análise gratuita." />
+  <title>Qarvon | Previsibilidade e Lucratividade para o Varejo</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink:   '#171716',
+            teal:  { DEFAULT: '#1fc2a9', dark: '#107c65' },
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          borderRadius: { '2xl': '1rem', '3xl': '1.5rem' },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ─── Base ─── */
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #171716; color: #fff; -webkit-font-smoothing: antialiased; }
+
+    /* ─── Section zebra ─── */
+    .sec-dark  { background: #171716; color: #fff; }
+    .sec-light { background: #ffffff; color: #171716; }
+
+    /* ─── Type on light bg ─── */
+    .light-body  { color: #5a5a57; }
+    .light-label { color: #888884; }
+
+    /* ─── Divider ─── */
+    .divider-dark  { height:1px; background:linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent); }
+    .divider-light { height:1px; background:linear-gradient(to right, transparent, rgba(23,23,22,0.10), transparent); }
+
+    /* ─── Overline label ─── */
+    .sec-label { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+
+    /* ─── Cards (dark section) ─── */
+    .card-dark {
+      background: #1e1e1d;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 1rem;
+    }
+    /* ─── Cards (light section) ─── */
+    .card-light {
+      background: #f6f6f4;
+      border: 1px solid #e8e8e5;
+      border-radius: 1rem;
+    }
+    .card-light.teal-left { border-left: 3px solid #1fc2a9; }
+
+    /* ─── Step badge ─── */
+    .step-badge {
+      width:38px; height:38px; border-radius:50%;
+      background:#1fc2a9; color:#171716;
+      font-weight:900; font-size:15px;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+    }
+
+    /* ─── Teal glow ─── */
+    .teal-glow { box-shadow: 0 0 32px rgba(31,194,169,0.22); }
+
+    /* ─── Marquee ─── */
+    .marquee-wrap {
+      overflow:hidden; white-space:nowrap;
+      -webkit-mask-image:linear-gradient(to right,transparent 0%,black 10%,black 90%,transparent 100%);
+      mask-image:linear-gradient(to right,transparent 0%,black 10%,black 90%,transparent 100%);
+    }
+    .marquee-track { display:inline-flex; animation:marquee 30s linear infinite; }
+    .marquee-track:hover { animation-play-state:paused; }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .m-item {
+      display:inline-flex; align-items:center; gap:10px; padding:0 36px;
+      font-size:12px; font-weight:700; letter-spacing:.06em;
+      text-transform:uppercase; color:rgba(255,255,255,0.4);
+    }
+    .m-item b { color:#1fc2a9; font-size:15px; }
+
+    /* ─── Underline accent ─── */
+    .u-teal { position:relative; display:inline; color:#1fc2a9; }
+    .u-teal::after {
+      content:''; position:absolute; left:0; bottom:-2px;
+      width:100%; height:3px; background:#1fc2a9; border-radius:2px;
+    }
+
+    /* ─── Blink dot ─── */
+    .blink { animation:blink 2s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      background:#1fc2a9; color:#171716;
+      font-weight:800; font-size:15px; border:none; cursor:pointer;
+      border-radius:.75rem; padding:15px 28px;
+      transition:background .2s, transform .15s, box-shadow .2s;
+    }
+    .btn-primary:hover  { background:#1aac96; transform:translateY(-1px); box-shadow:0 8px 24px rgba(31,194,169,0.28); }
+    .btn-primary:active { transform:translateY(0); }
+    .btn-primary:disabled { opacity:.4; cursor:not-allowed; transform:none; box-shadow:none; }
+
+    .btn-ghost {
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      background:transparent; color:rgba(255,255,255,.7);
+      font-weight:600; font-size:15px;
+      border:1px solid rgba(255,255,255,.18); border-radius:.75rem; padding:15px 28px;
+      transition:border-color .2s, color .2s, background .2s;
+    }
+    .btn-ghost:hover { border-color:rgba(255,255,255,.35); color:#fff; background:rgba(255,255,255,.05); }
+
+    /* Pulse — mobile only */
+    @keyframes pulse-teal {
+      0%,100% { box-shadow:0 0 0 0 rgba(31,194,169,.45); }
+      50%      { box-shadow:0 0 0 14px rgba(31,194,169,0); }
+    }
+    .pulse-btn { animation:pulse-teal 2.8s infinite; }
+    @media(min-width:768px){ .pulse-btn { animation:none !important; } }
+
+    /* ─── Sticky bar (mobile only) ─── */
+    #sticky-bar {
+      position:fixed; bottom:0; left:0; right:0; z-index:60;
+      background:rgba(23,23,22,.96); backdrop-filter:blur(12px);
+      border-top:1px solid rgba(31,194,169,.2);
+      padding:12px 16px 18px;
+      transition:transform .3s ease;
+    }
+    #sticky-bar.bar-hidden { transform:translateY(110%); }
+    @media(min-width:768px){ #sticky-bar { display:none; } }
+
+    /* ─── Form inputs ─── */
+    .f-input {
+      width:100%; padding:14px 16px;
+      background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.13);
+      color:#fff; border-radius:.75rem; font-size:15px;
+      transition:border-color .2s, box-shadow .2s;
+      appearance:none; -webkit-appearance:none;
+    }
+    .f-input::placeholder { color:rgba(255,255,255,.3); }
+    .f-input:focus { outline:none; border-color:#1fc2a9; box-shadow:0 0 0 3px rgba(31,194,169,.18); }
+    .f-input.err  { border-color:#f87171; box-shadow:0 0 0 3px rgba(248,113,113,.15); }
+    .f-input.ok   { border-color:#1fc2a9; }
+    #telefone { padding-left:44px; }
+
+    /* ─── Spinner ─── */
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .spinner {
+      width:18px; height:18px; border-radius:50%;
+      border:2px solid rgba(23,23,22,.3); border-top-color:#171716;
+      animation:spin .7s linear infinite; display:inline-block; flex-shrink:0;
+    }
+
+    /* ─── Fade-up reveal ─── */
+    .fade-up { opacity:0; transform:translateY(20px); transition:opacity .5s ease, transform .5s ease; }
+    .fade-up.in { opacity:1; transform:translateY(0); }
+
+    /* ─── Toast ─── */
+    #toast { transition:opacity .35s ease, transform .35s ease; pointer-events:none; }
+    #toast.show { opacity:1 !important; transform:translateY(0) !important; pointer-events:auto; }
+
+    /* ─── "O que acontece agora?" info box ─── */
+    .info-box {
+      background:#f0faf8;
+      border:1px solid rgba(31,194,169,.3);
+      border-radius:1rem;
+      padding:20px 24px;
+    }
+
+    /* ─── Number stat (caminho) ─── */
+    .step-num {
+      font-size:clamp(3rem,8vw,5rem); font-weight:900; line-height:1;
+      color:rgba(31,194,169,.18); letter-spacing:-.04em;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     STICKY MOBILE CTA
+═══════════════════════════════════════════════════ -->
+<div id="sticky-bar">
+  <a href="#formulario" class="btn-primary pulse-btn w-full text-center text-base py-4">
+    Descobrir Meu Lucro Cessante →
+  </a>
+  <p class="text-center text-xs mt-2" style="color:rgba(255,255,255,.35);">
+    Análise gratuita · Sem compromisso · Resposta em 24h
+  </p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════════ -->
+<header class="sec-dark sticky top-0 z-50" style="border-bottom:1px solid rgba(255,255,255,.07);backdrop-filter:blur(12px);background:rgba(23,23,22,.96);">
+  <div class="max-w-5xl mx-auto px-5 py-3.5 flex items-center justify-between">
+
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-xl flex items-center justify-center" style="background:#1fc2a9;">
+        <svg viewBox="0 0 24 24" fill="#171716" class="w-4 h-4"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></svg>
+      </div>
+      <span class="font-black text-xl tracking-tight">Qarvon</span>
+    </div>
+
+    <a href="#formulario" class="hidden md:inline-flex btn-primary text-sm px-5 py-2.5">
+      Análise Gratuita
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════
+     HERO — PRETO #171716
+═══════════════════════════════════════════════════ -->
+<section class="sec-dark pt-16 pb-20 px-5 md:pt-24 md:pb-28 text-center">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 border rounded-full px-4 py-1.5 mb-8"
+         style="border-color:rgba(31,194,169,.3);background:rgba(31,194,169,.07);">
+      <span class="blink w-2 h-2 rounded-full flex-shrink-0" style="background:#1fc2a9;"></span>
+      <span class="sec-label" style="color:#1fc2a9;">Especialista em Varejo · 200+ Lojistas</span>
+    </div>
+
+    <!-- H1 -->
+    <h1 class="font-black leading-[1.06] tracking-tight mb-6" style="font-size:clamp(2.1rem,5.5vw,3.75rem);">
+      Lucro cessante é silencioso.<br/>
+      Mas ele está acontecendo<br/>
+      <span class="u-teal">agora na sua loja.</span>
+    </h1>
+
+    <!-- Sub -->
+    <p class="mb-10 max-w-2xl mx-auto leading-relaxed" style="font-size:clamp(1rem,2.5vw,1.2rem);color:rgba(255,255,255,.6);">
+      A Qarvon mapeia o que está custando vendas ao seu negócio e constrói o sistema
+      que transforma marketing em receita previsível — todo mês, sem depender da sorte.
+    </p>
+
+    <!-- CTAs -->
+    <div class="flex flex-col sm:flex-row gap-3 justify-center mb-10">
+      <a href="#formulario" class="btn-primary pulse-btn teal-glow" style="font-size:1rem;padding:16px 32px;">
+        Descobrir Meu Lucro Cessante →
+      </a>
+      <a href="#caminho" class="btn-ghost" style="font-size:1rem;padding:16px 32px;">
+        Ver como funciona
+      </a>
+    </div>
+
+    <!-- Trust pills -->
+    <div class="flex flex-wrap justify-center gap-x-6 gap-y-2">
+      <span class="flex items-center gap-1.5 text-sm" style="color:rgba(255,255,255,.4);">
+        <svg class="w-4 h-4 flex-shrink-0" style="color:#1fc2a9;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        Análise 100% gratuita
+      </span>
+      <span class="flex items-center gap-1.5 text-sm" style="color:rgba(255,255,255,.4);">
+        <svg class="w-4 h-4 flex-shrink-0" style="color:#1fc2a9;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        Sem fidelidade forçada
+      </span>
+      <span class="flex items-center gap-1.5 text-sm" style="color:rgba(255,255,255,.4);">
+        <svg class="w-4 h-4 flex-shrink-0" style="color:#1fc2a9;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        Retorno em até 24h
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- Marquee (still dark, part do bloco hero) -->
+<div class="sec-dark py-5 marquee-wrap">
+  <div class="marquee-track">
+    <div class="m-item"><b>200+</b> lojistas atendidos</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item"><b>18</b> estados no Brasil</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item"><b>3×</b> crescimento médio</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item"><b>R$ 180k+</b> gerado por cliente</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item">resultados em <b>30</b> dias</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item">estoque <b>zero</b> parado</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <!-- mirror -->
+    <div class="m-item"><b>200+</b> lojistas atendidos</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item"><b>18</b> estados no Brasil</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item"><b>3×</b> crescimento médio</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item"><b>R$ 180k+</b> gerado por cliente</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item">resultados em <b>30</b> dias</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item">estoque <b>zero</b> parado</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     DORES — BRANCO #FFFFFF
+═══════════════════════════════════════════════════ -->
+<section class="sec-light py-20 px-5 md:py-28" id="dores">
+  <div class="max-w-3xl mx-auto">
+
+    <div class="text-center mb-14 fade-up">
+      <p class="sec-label mb-3" style="color:#1fc2a9;">Por que sua loja ainda não tem previsibilidade?</p>
+      <h2 class="font-black leading-tight" style="font-size:clamp(1.9rem,4.5vw,3rem);">
+        Cada mês sem sistema é lucro<br/>
+        <span style="color:#1fc2a9;">que você nunca vai recuperar.</span>
+      </h2>
+    </div>
+
+    <div class="space-y-4">
+
+      <div class="card-light teal-left p-6 fade-up flex items-start gap-5">
+        <span class="text-3xl flex-shrink-0 mt-0.5">📦</span>
+        <div>
+          <h3 class="font-extrabold text-base mb-1.5" style="color:#171716;">Estoque virado capital morto</h3>
+          <p class="text-sm leading-relaxed light-body">
+            Você comprou baseado em feeling, o produto não saiu e agora ele ocupa espaço
+            físico <em>e</em> financeiro. Esse é o lucro cessante mais visível — e o mais evitável.
+            Marketing com método teria antecipado a demanda.
+          </p>
+        </div>
+      </div>
+
+      <div class="card-light teal-left p-6 fade-up flex items-start gap-5">
+        <span class="text-3xl flex-shrink-0 mt-0.5">📉</span>
+        <div>
+          <h3 class="font-extrabold text-base mb-1.5" style="color:#171716;">Meses bons que mascaram o buraco</h3>
+          <p class="text-sm leading-relaxed light-body">
+            O mês bom faz você relaxar. O ruim faz você se desesperar. Nenhum dos dois
+            explica o porquê. Sem previsibilidade, você não administra uma loja —
+            você reage a ela. Toda decisão chega tarde.
+          </p>
+        </div>
+      </div>
+
+      <div class="card-light teal-left p-6 fade-up flex items-start gap-5">
+        <span class="text-3xl flex-shrink-0 mt-0.5">💸</span>
+        <div>
+          <h3 class="font-extrabold text-base mb-1.5" style="color:#171716;">Verba de marketing sem retorno rastreável</h3>
+          <p class="text-sm leading-relaxed light-body">
+            Você sabe exatamente quanto investiu. Você não sabe quanto voltou.
+            Essa equação, repetida mês a mês, drena o caixa e impede qualquer
+            crescimento sustentável. É lucro cessante com data de emissão de nota fiscal.
+          </p>
+        </div>
+      </div>
+
+      <div class="card-light teal-left p-6 fade-up flex items-start gap-5">
+        <span class="text-3xl flex-shrink-0 mt-0.5">🔍</span>
+        <div>
+          <h3 class="font-extrabold text-base mb-1.5" style="color:#171716;">Decisões tomadas no escuro</h3>
+          <p class="text-sm leading-relaxed light-body">
+            Sua concorrência já usa dados para antecipar demanda. Você ainda descobre
+            o que vendeu depois que o mês fechou. Cada decisão baseada em intuição
+            tem um custo invisível — e cumulativo.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gancho -->
+    <div class="mt-10 rounded-2xl p-6 text-center fade-up"
+         style="background:rgba(31,194,169,.07);border:1px solid rgba(31,194,169,.25);">
+      <p class="font-bold text-base leading-snug" style="color:#171716;">
+        Se qualquer um desses pontos ressoa, você tem
+        <span style="color:#1fc2a9;" class="font-black">lucro cessante mensurável</span>
+        na sua operação. A boa notícia: ele tem solução.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     O CAMINHO PARA A PREVISIBILIDADE — PRETO #171716
+═══════════════════════════════════════════════════ -->
+<section class="sec-dark py-20 px-5 md:py-28" id="caminho">
+  <div class="max-w-3xl mx-auto">
+
+    <div class="text-center mb-16 fade-up">
+      <p class="sec-label mb-3" style="color:#1fc2a9;">Método Qarvon</p>
+      <h2 class="font-black leading-tight" style="font-size:clamp(1.9rem,4.5vw,3rem);">
+        O Caminho para a<br/>
+        <span style="color:#1fc2a9;">Previsibilidade</span>
+      </h2>
+      <p class="mt-4 max-w-xl mx-auto leading-relaxed" style="color:rgba(255,255,255,.55);font-size:.97rem;">
+        Quatro etapas que transformam o caos de vendas em um sistema
+        que entrega resultado todo mês — sem sorte, sem achismo.
+      </p>
+    </div>
+
+    <div class="space-y-5">
+
+      <!-- Step 1 -->
+      <div class="card-dark p-6 md:p-8 fade-up flex items-start gap-6">
+        <div class="flex-shrink-0">
+          <div class="step-num">01</div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="step-badge">1</div>
+            <h3 class="font-extrabold text-lg">Auditoria de Dados</h3>
+          </div>
+          <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,.55);">
+            Antes de mudar qualquer coisa, a gente entende o que está acontecendo.
+            Analisamos seus dados de vendas, sazonalidade e comportamento de compra
+            para identificar exatamente <strong class="text-white">onde está o lucro cessante
+            da sua loja</strong>. Nenhum achismo — só evidência.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="card-dark p-6 md:p-8 fade-up flex items-start gap-6">
+        <div class="flex-shrink-0">
+          <div class="step-num">02</div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="step-badge">2</div>
+            <h3 class="font-extrabold text-lg">Arquitetura de Atração</h3>
+          </div>
+          <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,.55);">
+            Com o diagnóstico em mãos, construímos o sistema de campanhas que traz o
+            cliente certo no momento certo. Meta Ads, Google Ads e conteúdo alinhados
+            em um único funil — cada real investido rastreado e com
+            <strong class="text-white">retorno mensurável em faturamento</strong>, não em curtidas.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="card-dark p-6 md:p-8 fade-up flex items-start gap-6">
+        <div class="flex-shrink-0">
+          <div class="step-num">03</div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="step-badge">3</div>
+            <h3 class="font-extrabold text-lg">Sistema de Recompra</h3>
+          </div>
+          <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,.55);">
+            A maior margem do varejo está no cliente que volta. Implementamos fluxos
+            de relacionamento e ofertas inteligentes para transformar compradores
+            eventuais em recorrentes.
+            <strong class="text-white">Recompra é previsibilidade de caixa.</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="card-dark p-6 md:p-8 fade-up flex items-start gap-6">
+        <div class="flex-shrink-0">
+          <div class="step-num">04</div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="step-badge">4</div>
+            <h3 class="font-extrabold text-lg">Otimização Quinzenal</h3>
+          </div>
+          <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,.55);">
+            Nada é estático. A cada 15 dias revisamos os dados, ajustamos as campanhas
+            e te apresentamos um relatório claro: o que funcionou, o que mudamos e o que
+            vem a seguir. <strong class="text-white">Você sempre sabe para onde o dinheiro está indo.</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     FORMULÁRIO — BRANCO #FFFFFF
+═══════════════════════════════════════════════════ -->
+<section class="sec-light py-20 px-5 md:py-28" id="formulario">
+  <div class="max-w-lg mx-auto">
+
+    <!-- Section header -->
+    <div class="text-center mb-10 fade-up">
+      <p class="sec-label mb-3" style="color:#1fc2a9;">Análise Gratuita</p>
+      <h2 class="font-black leading-tight mb-4" style="font-size:clamp(1.75rem,4vw,2.5rem);color:#171716;">
+        Descubra quanto custa a falta<br/>de previsibilidade na sua loja
+      </h2>
+      <p class="text-sm leading-relaxed light-body max-w-sm mx-auto">
+        Preencha o formulário e receba uma análise diagnóstica personalizada.
+      </p>
+    </div>
+
+    <!-- "O que acontece agora?" -->
+    <div class="info-box mb-8 fade-up">
+      <div class="flex items-start gap-3">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+             style="background:rgba(31,194,169,.15);">
+          <svg class="w-5 h-5" style="color:#1fc2a9;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="font-bold text-sm mb-1" style="color:#171716;">O que acontece agora?</p>
+          <p class="text-sm leading-relaxed light-body">
+            Após preencher, nosso sistema processa seus dados e você será
+            <strong style="color:#171716;">redirecionado para o WhatsApp do Jhanry</strong>
+            para uma análise diagnóstica de <strong style="color:#171716;">15 minutos</strong>
+            — focada em identificar o lucro cessante da sua operação.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form card (dark floating on white) -->
+    <div class="teal-glow fade-up" id="form-card"
+         style="background:#171716;border-radius:1.25rem;padding:28px 24px;">
+
+      <!-- Urgency badge -->
+      <div class="flex items-center gap-2 rounded-xl px-4 py-3 mb-6"
+           style="background:rgba(31,194,169,.08);border:1px solid rgba(31,194,169,.2);">
+        <span class="blink w-2 h-2 rounded-full flex-shrink-0" style="background:#1fc2a9;"></span>
+        <p class="text-xs font-semibold" style="color:#1fc2a9;">
+          Vagas limitadas esta semana · Retorno em até 24 horas
+        </p>
+      </div>
+
+      <form id="leadForm" novalidate autocomplete="on" class="space-y-5">
+
+        <!-- Nome -->
+        <div>
+          <label for="nome" class="block text-sm font-semibold mb-2" style="color:rgba(255,255,255,.65);">
+            Seu nome <span style="color:#1fc2a9;">*</span>
+          </label>
+          <input type="text" id="nome" name="nome"
+                 placeholder="Ex: João Silva"
+                 autocomplete="given-name"
+                 class="f-input" required />
+          <p id="nome-error" class="text-xs mt-1.5 hidden" style="color:#f87171;">Informe seu nome.</p>
+        </div>
+
+        <!-- Empresa -->
+        <div>
+          <label for="empresa" class="block text-sm font-semibold mb-2" style="color:rgba(255,255,255,.65);">
+            Nome da sua loja / empresa <span style="color:#1fc2a9;">*</span>
+          </label>
+          <input type="text" id="empresa" name="empresa"
+                 placeholder="Ex: Moda Bella Boutique"
+                 autocomplete="organization"
+                 class="f-input" required />
+          <p id="empresa-error" class="text-xs mt-1.5 hidden" style="color:#f87171;">Informe o nome da empresa.</p>
+        </div>
+
+        <!-- Telefone -->
+        <div>
+          <label for="telefone" class="block text-sm font-semibold mb-2" style="color:rgba(255,255,255,.65);">
+            WhatsApp <span style="color:#1fc2a9;">*</span>
+          </label>
+          <div class="relative">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-base pointer-events-none select-none" style="line-height:1;">🇧🇷</span>
+            <input type="tel" id="telefone" name="telefone"
+                   placeholder="(XX) 9XXXX-XXXX"
+                   autocomplete="tel"
+                   maxlength="15"
+                   inputmode="numeric"
+                   class="f-input" required />
+          </div>
+          <p id="tel-error" class="text-xs mt-1.5 hidden" style="color:#f87171;">Formato inválido. Use: (XX) 9XXXX-XXXX</p>
+          <p id="tel-hint" class="text-xs mt-1.5" style="color:rgba(255,255,255,.3);">Usado apenas para o contato de análise.</p>
+        </div>
+
+        <!-- Faturamento -->
+        <div>
+          <label for="faturamento" class="block text-sm font-semibold mb-2" style="color:rgba(255,255,255,.65);">
+            Faturamento mensal médio da sua loja <span style="color:#1fc2a9;">*</span>
+          </label>
+          <div class="relative">
+            <select id="faturamento" name="faturamento" class="f-input cursor-pointer" required>
+              <option value=""        style="background:#1e1e1d;color:rgba(255,255,255,.35);">Selecione a faixa…</option>
+              <option value="0-20k"   style="background:#1e1e1d;color:#fff;">R$ 0 a 20k</option>
+              <option value="20-40k"  style="background:#1e1e1d;color:#fff;">R$ 20k a 40k</option>
+              <option value="40-60k"  style="background:#1e1e1d;color:#fff;">R$ 40k a 60k</option>
+              <option value="60-100k" style="background:#1e1e1d;color:#fff;">R$ 60k a 100k</option>
+              <option value="100-300k"style="background:#1e1e1d;color:#fff;">R$ 100k a 300k</option>
+              <option value="300-500k"style="background:#1e1e1d;color:#fff;">R$ 300k a 500k</option>
+              <option value="500k-1m" style="background:#1e1e1d;color:#fff;">R$ 500k a 1M</option>
+              <option value="acima-1m"style="background:#1e1e1d;color:#fff;">Acima de R$ 1M</option>
+            </select>
+            <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none"
+                 style="color:rgba(255,255,255,.4);"
+                 fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </div>
+          <p id="fat-error" class="text-xs mt-1.5 hidden" style="color:#f87171;">Selecione a faixa de faturamento.</p>
+        </div>
+
+        <!-- Submit -->
+        <div class="pt-1">
+          <button type="submit" id="submitBtn" class="btn-primary teal-glow w-full py-4 text-base">
+            Quero Minha Análise Gratuita →
+          </button>
+          <p class="text-center text-xs mt-3" style="color:rgba(255,255,255,.3);">
+            🔒 Dados protegidos. Não compartilhamos com terceiros.
+          </p>
+        </div>
+
+      </form>
+
+      <!-- Success -->
+      <div id="formSuccess" class="hidden text-center py-10">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5"
+             style="background:rgba(31,194,169,.12);">
+          <svg class="w-8 h-8" style="color:#1fc2a9;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+        <h3 class="font-black text-xl mb-2">Recebemos o seu pedido!</h3>
+        <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,.55);">
+          Redirecionando para o WhatsApp do Jhanry…<br/>
+          <span style="color:#1fc2a9;" class="font-semibold">Análise diagnóstica de 15 minutos aguardando você.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     DIFERENCIAIS — PRETO #171716
+═══════════════════════════════════════════════════ -->
+<section class="sec-dark py-16 px-5">
+  <div class="max-w-3xl mx-auto grid md:grid-cols-3 gap-4">
+
+    <div class="card-dark p-6 text-center fade-up">
+      <div class="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl"
+           style="background:rgba(31,194,169,.1);">🎯</div>
+      <h3 class="font-extrabold text-base mb-1.5">Resultado em faturamento</h3>
+      <p class="text-sm" style="color:rgba(255,255,255,.5);">Medimos sucesso em reais no caixa, não em alcance de post.</p>
+    </div>
+
+    <div class="card-dark p-6 text-center fade-up">
+      <div class="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl"
+           style="background:rgba(31,194,169,.1);">🏪</div>
+      <h3 class="font-extrabold text-base mb-1.5">DNA de varejo</h3>
+      <p class="text-sm" style="color:rgba(255,255,255,.5);">Conhecemos ciclo de compra, sazonalidade e giro de estoque.</p>
+    </div>
+
+    <div class="card-dark p-6 text-center fade-up">
+      <div class="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl"
+           style="background:rgba(31,194,169,.1);">📊</div>
+      <h3 class="font-extrabold text-base mb-1.5">Transparência total</h3>
+      <p class="text-sm" style="color:rgba(255,255,255,.5);">Dashboard claro e reunião quinzenal. Sem jargão, sem enrolação.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     FINAL CTA — PRETO #171716
+═══════════════════════════════════════════════════ -->
+<section class="sec-dark py-20 px-5 text-center">
+  <div class="max-w-2xl mx-auto fade-up">
+    <h2 class="font-black leading-tight mb-5" style="font-size:clamp(1.9rem,4.5vw,3rem);">
+      O lojista que não controla o marketing
+      <span style="color:#1fc2a9;"> é controlado<br/>por ele — e pelo caixa.</span>
+    </h2>
+    <p class="mb-8 max-w-md mx-auto leading-relaxed" style="color:rgba(255,255,255,.55);">
+      Cada mês sem previsibilidade é lucro que não volta.
+      Comece agora com uma análise gratuita e sem compromisso.
+    </p>
+    <a href="#formulario" class="btn-primary teal-glow pulse-btn" style="font-size:1rem;padding:16px 36px;">
+      Descobrir Meu Lucro Cessante →
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     FOOTER — PRETO #171716
+═══════════════════════════════════════════════════ -->
+<footer class="sec-dark py-10 px-5 text-center">
+  <div class="flex items-center justify-center gap-2.5 mb-4">
+    <div class="w-7 h-7 rounded-xl flex items-center justify-center" style="background:#1fc2a9;">
+      <svg viewBox="0 0 24 24" fill="#171716" class="w-4 h-4"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></svg>
+    </div>
+    <span class="font-black text-lg">Qarvon</span>
+  </div>
+  <p class="text-xs" style="color:rgba(255,255,255,.3);">
+    © 2025 Qarvon Media · Especialistas em Marketing para Varejo<br/>
+    200+ lojistas transformados · 18 estados no Brasil
+  </p>
+</footer>
+
+<!-- TOAST -->
+<div id="toast"
+     class="fixed top-4 right-4 z-[100] max-w-xs text-sm font-semibold px-5 py-3 rounded-2xl shadow-2xl opacity-0"
+     style="transform:translateY(12px);" role="alert"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     JAVASCRIPT — mantido integralmente
+═══════════════════════════════════════════════════ -->
+<script>
+  /* ══ CONFIG ══ */
+  const WEBHOOK_URL  = 'https://n8n.vps.qarvon.com/webhook/lead_form_qarvon';
+  const REDIRECT_URL = 'https://api.whatsapp.com/send/?phone=5584999200001&text=Ol%C3%A1%2C+Jhanry%21+Pesquisei+por+voc%C3%AAs+e+queria+mais+informa%C3%A7%C3%B5es&type=phone_number&app_absent=0';
+  const PHONE_REGEX  = /^\(\d{2}\)\s9\d{4}-\d{4}$/;
+
+  /* ══ PHONE MASK ══ */
+  const phoneEl = document.getElementById('telefone');
+
+  phoneEl.addEventListener('input', (e) => {
+    let v = e.target.value.replace(/\D/g, '');
+    if (v.length > 11) v = v.slice(0, 11);
+    let m = '';
+    if      (v.length === 0)  m = '';
+    else if (v.length <= 2)   m = `(${v}`;
+    else if (v.length <= 6)   m = `(${v.slice(0,2)}) ${v.slice(2)}`;
+    else if (v.length <= 10)  m = `(${v.slice(0,2)}) ${v.slice(2,6)}-${v.slice(6)}`;
+    else                      m = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+    e.target.value = m;
+    if (m !== '') validatePhone(false);
+  });
+
+  phoneEl.addEventListener('blur', () => validatePhone(true));
+
+  function validatePhone(showError = true) {
+    const v      = phoneEl.value;
+    const errEl  = document.getElementById('tel-error');
+    const hintEl = document.getElementById('tel-hint');
+    if (v === '') {
+      phoneEl.classList.remove('err', 'ok');
+      if (showError) {
+        phoneEl.classList.add('err');
+        errEl.textContent = 'Informe seu WhatsApp com DDD.';
+        errEl.classList.remove('hidden');
+        hintEl.classList.add('hidden');
+      } else {
+        errEl.classList.add('hidden');
+        hintEl.classList.remove('hidden');
+      }
+      return false;
+    }
+    const ok = PHONE_REGEX.test(v);
+    phoneEl.classList.toggle('err', !ok);
+    phoneEl.classList.toggle('ok',   ok);
+    if (showError) {
+      errEl.textContent = 'Formato inválido. Use: (XX) 9XXXX-XXXX';
+      errEl.classList.toggle('hidden', ok);
+    }
+    hintEl.classList.toggle('hidden', !ok);
+    return ok;
+  }
+
+  /* ══ FIELD VALIDATORS ══ */
+  function validateField(id, errId) {
+    const el  = document.getElementById(id);
+    const err = document.getElementById(errId);
+    const ok  = el.value.trim() !== '';
+    el.classList.toggle('err', !ok);
+    el.classList.toggle('ok',   ok);
+    err.classList.toggle('hidden', ok);
+    return ok;
+  }
+
+  function validateSelect(id, errId) {
+    const el  = document.getElementById(id);
+    const err = document.getElementById(errId);
+    const ok  = el.value !== '';
+    el.classList.toggle('err', !ok);
+    err.classList.toggle('hidden', ok);
+    return ok;
+  }
+
+  /* ══ FORM SUBMIT ══ */
+  document.getElementById('leadForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const v1 = validateField('nome',    'nome-error');
+    const v2 = validateField('empresa', 'empresa-error');
+    const v3 = validatePhone(true);
+    const v4 = validateSelect('faturamento', 'fat-error');
+
+    if (!v1 || !v2 || !v3 || !v4) {
+      showToast('Preencha todos os campos corretamente.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Enviando…';
+
+    const payload = {
+      nome:        document.getElementById('nome').value.trim(),
+      empresa:     document.getElementById('empresa').value.trim(),
+      telefone:    document.getElementById('telefone').value.trim(),
+      faturamento: document.getElementById('faturamento').value,
+      origem:      'organico',
+      timestamp:   new Date().toISOString(),
+    };
+
+    try {
+      const res = await fetch(WEBHOOK_URL, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      document.getElementById('leadForm').classList.add('hidden');
+      document.getElementById('formSuccess').classList.remove('hidden');
+      document.getElementById('sticky-bar').classList.add('bar-hidden');
+
+      setTimeout(() => { window.location.href = REDIRECT_URL; }, 2000);
+
+    } catch (err) {
+      console.error('Webhook error:', err);
+      btn.disabled = false;
+      btn.innerHTML = 'Quero Minha Análise Gratuita →';
+      showToast('Erro ao enviar. Tente novamente.', 'error');
+    }
+  });
+
+  /* ══ TOAST ══ */
+  function showToast(msg, type = 'error') {
+    const t  = document.getElementById('toast');
+    t.textContent    = msg;
+    t.style.background = type === 'error' ? '#ef4444' : '#1fc2a9';
+    t.style.color      = type === 'error' ? '#fff'    : '#171716';
+    t.style.transform  = 'translateY(12px)';
+    t.style.opacity    = '0';
+    void t.offsetHeight;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  /* ══ STICKY BAR — ocultar quando formulário visível ══ */
+  new IntersectionObserver(
+    ([e]) => document.getElementById('sticky-bar').classList.toggle('bar-hidden', e.isIntersecting),
+    { threshold: 0.15 }
+  ).observe(document.getElementById('formulario'));
+
+  /* ══ SCROLL REVEAL ══ */
+  const fadeObs = new IntersectionObserver(
+    (entries) => entries.forEach(el => {
+      if (el.isIntersecting) { el.target.classList.add('in'); fadeObs.unobserve(el.target); }
+    }),
+    { threshold: 0.08, rootMargin: '0px 0px -28px 0px' }
+  );
+  document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
+
+  /* ══ Header border ══ */
+  document.querySelector('header').style.borderBottomColor = 'rgba(255,255,255,0.07)';
+</script>
+
+</body>
+</html>

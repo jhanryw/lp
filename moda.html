@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A Qarvon transforma o estoque parado da sua loja de roupas em lucro líquido. Sem liquidação. Sem guerra de preços. Estratégia de escala real para moda." />
+  <title>Qarvon | Estratégia de Escala para Lojas de Moda</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink:  '#171716',
+            teal: { DEFAULT: '#1fc2a9', dark: '#107c65' },
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ── Base ── */
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #171716; color: #fff; -webkit-font-smoothing: antialiased; }
+
+    /* ── Zebra sections ── */
+    .sec-dark  { background: #171716; color: #fff; }
+    .sec-light { background: #ffffff; color: #171716; }
+
+    /* ── All text on white section is explicitly black ── */
+    .sec-light h1,
+    .sec-light h2,
+    .sec-light h3,
+    .sec-light h4,
+    .sec-light p,
+    .sec-light li,
+    .sec-light label,
+    .sec-light span:not(.teal-text) { color: #171716; }
+    .sec-light .body-text  { color: #4f4f4c; }
+    .sec-light .teal-text  { color: #1fc2a9; }
+    .sec-light .dim-text   { color: #888884; }
+
+    /* ── Overline ── */
+    .sec-label {
+      display: inline-block;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+    }
+
+    /* ── Teal underline accent ── */
+    .u-teal { position: relative; display: inline; color: #1fc2a9; }
+    .u-teal::after {
+      content: ''; position: absolute; left: 0; bottom: -3px;
+      width: 100%; height: 3px; background: #1fc2a9; border-radius: 2px;
+    }
+
+    /* ── Blink ── */
+    .blink { animation: blink 2s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ── Teal glow ── */
+    .teal-glow { box-shadow: 0 0 32px rgba(31,194,169,.22); }
+
+    /* ── Cards on dark bg ── */
+    .card-dark {
+      background: #1e1e1d;
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 1rem;
+    }
+
+    /* ── Cards on light bg ── */
+    .card-light {
+      background: #f6f6f4;
+      border: 1px solid #e5e5e2;
+      border-left: 3px solid #1fc2a9;
+      border-radius: 1rem;
+    }
+    .card-light h3 { color: #171716 !important; }
+    .card-light p  { color: #4f4f4c !important; }
+
+    /* ── Step badge ── */
+    .step-badge {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: #1fc2a9; color: #171716;
+      font-weight: 900; font-size: 15px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-num {
+      font-size: clamp(3rem, 8vw, 5rem); font-weight: 900; line-height: 1;
+      color: rgba(31,194,169,.18); letter-spacing: -.04em;
+    }
+
+    /* ── Marquee ── */
+    .marquee-wrap {
+      overflow: hidden; white-space: nowrap;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    }
+    .marquee-track { display: inline-flex; animation: marquee 32s linear infinite; }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .m-item {
+      display: inline-flex; align-items: center; gap: 10px; padding: 0 36px;
+      font-size: 12px; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; color: rgba(255,255,255,.4);
+    }
+    .m-item b { color: #1fc2a9; font-size: 15px; }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: #1fc2a9; color: #171716;
+      font-weight: 800; font-size: 15px; border: none; cursor: pointer;
+      border-radius: .75rem; padding: 15px 28px;
+      transition: background .2s, transform .15s, box-shadow .2s;
+    }
+    .btn-primary:hover  { background: #1aac96; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(31,194,169,.28); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: transparent; color: rgba(255,255,255,.7);
+      font-weight: 600; font-size: 15px;
+      border: 1px solid rgba(255,255,255,.18); border-radius: .75rem; padding: 15px 28px;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,.35); color: #fff; background: rgba(255,255,255,.05); }
+
+    /* Pulse — mobile only */
+    @keyframes pulse-teal {
+      0%,100% { box-shadow: 0 0 0 0 rgba(31,194,169,.45); }
+      50%      { box-shadow: 0 0 0 14px rgba(31,194,169,0); }
+    }
+    .pulse-btn { animation: pulse-teal 2.8s infinite; }
+    @media(min-width: 768px) { .pulse-btn { animation: none !important; } }
+
+    /* ── Sticky bar (mobile) ── */
+    #sticky-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 60;
+      background: rgba(23,23,22,.96); backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(31,194,169,.2);
+      padding: 12px 16px 18px;
+      transition: transform .3s ease;
+    }
+    #sticky-bar.bar-hidden { transform: translateY(110%); }
+    @media(min-width: 768px) { #sticky-bar { display: none; } }
+
+    /* ── Form inputs (inside dark card) ── */
+    .f-input {
+      width: 100%; padding: 14px 16px;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.13);
+      color: #fff; border-radius: .75rem; font-size: 15px;
+      transition: border-color .2s, box-shadow .2s;
+      appearance: none; -webkit-appearance: none;
+    }
+    .f-input::placeholder { color: rgba(255,255,255,.3); }
+    .f-input:focus { outline: none; border-color: #1fc2a9; box-shadow: 0 0 0 3px rgba(31,194,169,.18); }
+    .f-input.err  { border-color: #f87171; box-shadow: 0 0 0 3px rgba(248,113,113,.15); }
+    .f-input.ok   { border-color: #1fc2a9; }
+    #telefone { padding-left: 44px; }
+
+    /* ── Info box ── */
+    .info-box {
+      background: #f0faf8;
+      border: 1px solid rgba(31,194,169,.3);
+      border-radius: 1rem; padding: 20px 24px;
+    }
+    .info-box * { color: #171716; }
+    .info-box .teal-text { color: #1fc2a9 !important; }
+
+    /* ── Spinner ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 2px solid rgba(23,23,22,.3); border-top-color: #171716;
+      animation: spin .7s linear infinite; display: inline-block; flex-shrink: 0;
+    }
+
+    /* ── Fade-up ── */
+    .fade-up { opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease; }
+    .fade-up.in { opacity: 1; transform: translateY(0); }
+
+    /* ── Toast ── */
+    #toast { transition: opacity .35s ease, transform .35s ease; pointer-events: none; }
+    #toast.show { opacity: 1 !important; transform: translateY(0) !important; pointer-events: auto; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════ STICKY MOBILE CTA ═══════════ -->
+<div id="sticky-bar">
+  <a href="#formulario" class="btn-primary pulse-btn w-full text-center text-base py-4">
+    Quero Vender Minha Coleção Agora →
+  </a>
+  <p class="text-center text-xs mt-2" style="color:rgba(255,255,255,.35);">
+    Diagnóstico gratuito · Sem compromisso · Resposta em 24h
+  </p>
+</div>
+
+<!-- ═══════════ HEADER (dark) ═══════════ -->
+<header class="sec-dark sticky top-0 z-50"
+        style="border-bottom:1px solid rgba(255,255,255,.07);backdrop-filter:blur(12px);background:rgba(23,23,22,.96);">
+  <div class="max-w-5xl mx-auto px-5 py-3 flex items-center justify-between">
+
+    <!-- Logo PNG -->
+    <a href="#" class="flex items-center">
+      <img src="./logoqarvon.png" alt="Qarvon" class="h-9 w-auto" />
+    </a>
+
+    <!-- Desktop CTA -->
+    <a href="#formulario" class="hidden md:inline-flex btn-primary text-sm px-5 py-2.5">
+      Análise Gratuita
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+</header>
+
+<!-- ═══════════ HERO (dark) ═══════════ -->
+<section class="sec-dark pt-16 pb-20 px-5 md:pt-24 md:pb-28 text-center">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 border rounded-full px-4 py-1.5 mb-8"
+         style="border-color:rgba(31,194,169,.3);background:rgba(31,194,169,.07);">
+      <span class="blink w-2 h-2 rounded-full flex-shrink-0" style="background:#1fc2a9;"></span>
+      <span class="sec-label" style="color:#1fc2a9;">Estratégia Real para Lojas de Moda</span>
+    </div>
+
+    <!-- H1 -->
+    <h1 class="font-black leading-[1.06] tracking-tight mb-6"
+        style="font-size:clamp(2rem,5.5vw,3.75rem);">
+      Transforme o seu estoque de<br/>
+      coleção passada em
+      <span class="u-teal">lucro líquido<br/>no bolso.</span>
+    </h1>
+
+    <!-- Sub -->
+    <p class="mb-10 max-w-2xl mx-auto leading-relaxed"
+       style="font-size:clamp(1rem,2.5vw,1.2rem);color:rgba(255,255,255,.6);">
+      Pare de depender de algoritmos que não entregam seus provadores.
+      Implementamos a estratégia de escala que faz sua loja vender
+      <strong style="color:#fff;">de domingo a domingo</strong>,
+      sem precisar de liquidações desesperadas.
+    </p>
+
+    <!-- CTAs -->
+    <div class="flex flex-col sm:flex-row gap-3 justify-center mb-10">
+      <a href="#formulario" class="btn-primary pulse-btn teal-glow"
+         style="font-size:1rem;padding:16px 32px;">
+        Quero Vender Minha Coleção Agora →
+      </a>
+      <a href="#metodo" class="btn-ghost" style="font-size:1rem;padding:16px 32px;">
+        Ver o método
+      </a>
+    </div>
+
+    <!-- Trust pills -->
+    <div class="flex flex-wrap justify-center gap-x-6 gap-y-2">
+      <span class="flex items-center gap-1.5 text-sm" style="color:rgba(255,255,255,.4);">
+        <svg class="w-4 h-4 flex-shrink-0" style="color:#1fc2a9;" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+        </svg>
+        Sem liquidação forçada
+      </span>
+      <span class="flex items-center gap-1.5 text-sm" style="color:rgba(255,255,255,.4);">
+        <svg class="w-4 h-4 flex-shrink-0" style="color:#1fc2a9;" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+        </svg>
+        Diagnóstico gratuito
+      </span>
+      <span class="flex items-center gap-1.5 text-sm" style="color:rgba(255,255,255,.4);">
+        <svg class="w-4 h-4 flex-shrink-0" style="color:#1fc2a9;" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+        </svg>
+        Retorno em até 24h
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- Marquee (dark) -->
+<div class="sec-dark py-5 marquee-wrap">
+  <div class="marquee-track">
+    <div class="m-item"><b>200+</b> lojistas atendidos</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item"><b>Sem</b> liquidação desesperada</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item"><b>3×</b> crescimento médio</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item">estoque <b>zero</b> parado</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item">venda <b>domingo a domingo</b></div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item">margem <b>preservada</b></div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <!-- mirror -->
+    <div class="m-item"><b>200+</b> lojistas atendidos</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item"><b>Sem</b> liquidação desesperada</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item"><b>3×</b> crescimento médio</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item">estoque <b>zero</b> parado</div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item">venda <b>domingo a domingo</b></div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+    <div class="m-item">margem <b>preservada</b></div>
+    <div class="m-item" style="color:#1fc2a9;">✦</div>
+  </div>
+</div>
+
+<!-- ═══════════ DORES (branco) ═══════════ -->
+<section class="sec-light py-20 px-5 md:py-28" id="dores">
+  <div class="max-w-3xl mx-auto">
+
+    <div class="text-center mb-14 fade-up">
+      <p class="sec-label mb-3 teal-text">A realidade de quem vende moda no Brasil</p>
+      <h2 class="font-black leading-tight" style="font-size:clamp(1.9rem,4.5vw,3rem);color:#171716;">
+        Você não tem problema de produto.<br/>
+        <span class="teal-text">Você tem problema de sistema de vendas.</span>
+      </h2>
+    </div>
+
+    <div class="space-y-4">
+
+      <div class="card-light p-6 fade-up flex items-start gap-5">
+        <span class="text-3xl flex-shrink-0 mt-0.5">👗</span>
+        <div>
+          <h3 class="font-extrabold text-base mb-1.5">O custo do cabide parado</h3>
+          <p class="text-sm leading-relaxed">
+            Cada peça que não vendeu na coleção certa virou prejuízo com prazo de vencimento.
+            O espaço no arara, o capital imobilizado e a depreciação da tendência são
+            <strong>custos invisíveis que sangram o caixa todo mês</strong>.
+            Sem método, você repete o erro na próxima coleção.
+          </p>
+        </div>
+      </div>
+
+      <div class="card-light p-6 fade-up flex items-start gap-5">
+        <span class="text-3xl flex-shrink-0 mt-0.5">🏪</span>
+        <div>
+          <h3 class="font-extrabold text-base mb-1.5">A guerra de preços com os magazines</h3>
+          <p class="text-sm leading-relaxed">
+            Renner, Riachuelo e Shein vendem com escala de milhões. Você não vai ganhar
+            brigando no preço — e nem precisa. Mas sem um posicionamento claro e
+            audiência certa, sua loja <strong>entra nessa briga sem querer e perde a margem</strong>
+            peça por peça, semana por semana.
+          </p>
+        </div>
+      </div>
+
+      <div class="card-light p-6 fade-up flex items-start gap-5">
+        <span class="text-3xl flex-shrink-0 mt-0.5">📱</span>
+        <div>
+          <h3 class="font-extrabold text-base mb-1.5">Baixo engajamento orgânico no Instagram</h3>
+          <p class="text-sm leading-relaxed">
+            Você posta todo dia, capricha no Reels, responde os comentários —
+            e o alcance continua caindo. O algoritmo não é seu parceiro de negócio.
+            <strong>Engajamento orgânico não paga boleto</strong>: é o tráfego pago
+            bem direcionado que coloca cliente no provador.
+          </p>
+        </div>
+      </div>
+
+      <div class="card-light p-6 fade-up flex items-start gap-5">
+        <span class="text-3xl flex-shrink-0 mt-0.5">📆</span>
+        <div>
+          <h3 class="font-extrabold text-base mb-1.5">Vendas concentradas em datas sazonais</h3>
+          <p class="text-sm leading-relaxed">
+            Dia das Mães bombou, Natal foi razoável, o resto do ano foi no braço.
+            Depender de datas comemorativas é administrar sazonalidade, não crescimento.
+            <strong>Uma loja que só vende bem em data especial ainda não tem sistema</strong> —
+            tem sorte calendária.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gancho de transição -->
+    <div class="mt-10 rounded-2xl p-6 text-center fade-up"
+         style="background:rgba(31,194,169,.07);border:1px solid rgba(31,194,169,.25);">
+      <p class="font-bold text-base leading-snug" style="color:#171716;">
+        Sua loja merece vender bem na segunda-feira de fevereiro tanto quanto no
+        Natal. <span class="teal-text font-black">Isso é o que um sistema de vendas faz.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ MÉTODO (dark) ═══════════ -->
+<section class="sec-dark py-20 px-5 md:py-28" id="metodo">
+  <div class="max-w-3xl mx-auto">
+
+    <div class="text-center mb-16 fade-up">
+      <p class="sec-label mb-3" style="color:#1fc2a9;">Método Qarvon para Moda</p>
+      <h2 class="font-black leading-tight" style="font-size:clamp(1.9rem,4.5vw,3rem);">
+        O Caminho para a<br/>
+        <span style="color:#1fc2a9;">Previsibilidade na Moda</span>
+      </h2>
+      <p class="mt-4 max-w-xl mx-auto leading-relaxed"
+         style="color:rgba(255,255,255,.55);font-size:.97rem;">
+        Quatro etapas que transformam o caos de coleções e sazonalidades em um
+        sistema que vende todos os dias, preservando sua margem.
+      </p>
+    </div>
+
+    <div class="space-y-5">
+
+      <!-- Step 1 -->
+      <div class="card-dark p-6 md:p-8 fade-up flex items-start gap-6">
+        <div class="flex-shrink-0">
+          <div class="step-num">01</div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="step-badge">1</div>
+            <h3 class="font-extrabold text-lg">Análise de Curva ABC de Estoque</h3>
+          </div>
+          <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,.55);">
+            Mapeamos todos os seus SKUs por giro, margem e sazonalidade. Identificamos
+            os itens A (alto giro, alta margem), B (potencial não explorado) e C
+            (capital morto a ser liquidado inteligentemente).
+            <strong class="text-white">Você para de comprar no feeling e começa a comprar com dados.</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="card-dark p-6 md:p-8 fade-up flex items-start gap-6">
+        <div class="flex-shrink-0">
+          <div class="step-num">02</div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="step-badge">2</div>
+            <h3 class="font-extrabold text-lg">Campanhas de Atração de Público Qualificado (High-End)</h3>
+          </div>
+          <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,.55);">
+            Criamos segmentações ultra-precisas no Meta Ads e Google para atingir
+            quem <em>já tem intenção de compra</em> no seu nicho de moda — não qualquer
+            um. Cada real investido vai para quem tem perfil de cliente ideal da
+            sua loja. <strong class="text-white">Provador cheio de pessoa certa, não de curioso.</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="card-dark p-6 md:p-8 fade-up flex items-start gap-6">
+        <div class="flex-shrink-0">
+          <div class="step-num">03</div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="step-badge">3</div>
+            <h3 class="font-extrabold text-lg">Automação de Remarketing para Carrinhos Abandonados e Condicionais</h3>
+          </div>
+          <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,.55);">
+            Quem separou a peça e não finalizou, quem foi no provador e foi embora,
+            quem clicou e saiu — todos recebem a mensagem certa, na hora certa,
+            no canal certo. Automação que recupera venda sem desconto desnecessário.
+            <strong class="text-white">Sua coleção vende mais sem precisar baixar o preço.</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="card-dark p-6 md:p-8 fade-up flex items-start gap-6">
+        <div class="flex-shrink-0">
+          <div class="step-num">04</div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="step-badge">4</div>
+            <h3 class="font-extrabold text-lg">Escala de Faturamento sem Perda de Margem</h3>
+          </div>
+          <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,.55);">
+            Crescer faturamento queimando margem em desconto não é crescimento —
+            é transferência de lucro para o cliente. Escalamos as campanhas que
+            provaram ROI positivo e cortamos o que drena verba.
+            <strong class="text-white">Mais receita. Mesma (ou melhor) margem. Todo mês.</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FORMULÁRIO (branco) ═══════════ -->
+<section class="sec-light py-20 px-5 md:py-28" id="formulario">
+  <div class="max-w-lg mx-auto">
+
+    <!-- Header da seção -->
+    <div class="text-center mb-10 fade-up">
+      <p class="sec-label mb-3 teal-text">Diagnóstico Gratuito</p>
+      <h2 class="font-black leading-tight mb-4"
+          style="font-size:clamp(1.75rem,4vw,2.5rem);color:#171716;">
+        Descubra quanto custa o cabide parado<br/>na sua loja todo mês
+      </h2>
+      <p class="text-sm leading-relaxed max-w-sm mx-auto" style="color:#4f4f4c;">
+        Preencha o formulário e receba uma análise estratégica personalizada
+        para a realidade da sua loja de moda.
+      </p>
+    </div>
+
+    <!-- O que acontece agora? -->
+    <div class="info-box mb-8 fade-up">
+      <div class="flex items-start gap-3">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+             style="background:rgba(31,194,169,.15);">
+          <svg class="w-5 h-5" style="color:#1fc2a9;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="font-bold text-sm mb-1" style="color:#171716;">O que acontece agora?</p>
+          <p class="text-sm leading-relaxed" style="color:#4f4f4c;">
+            Após preencher, nosso sistema processa seus dados e você será
+            <strong style="color:#171716;">redirecionado para o WhatsApp do Jhanry</strong>
+            para uma conversa de <strong style="color:#171716;">15 minutos</strong>
+            focada em mapear o lucro que está sendo perdido na sua operação de moda.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form card (dark sobre fundo branco) -->
+    <div id="form-card" class="teal-glow fade-up"
+         style="background:#171716;border-radius:1.25rem;padding:28px 24px;">
+
+      <!-- Urgência -->
+      <div class="flex items-center gap-2 rounded-xl px-4 py-3 mb-6"
+           style="background:rgba(31,194,169,.08);border:1px solid rgba(31,194,169,.2);">
+        <span class="blink w-2 h-2 rounded-full flex-shrink-0" style="background:#1fc2a9;"></span>
+        <p class="text-xs font-semibold" style="color:#1fc2a9;">
+          Vagas limitadas esta semana · Retorno em até 24 horas
+        </p>
+      </div>
+
+      <form id="leadForm" novalidate autocomplete="on" class="space-y-5">
+
+        <!-- Nome -->
+        <div>
+          <label for="nome" class="block text-sm font-semibold mb-2"
+                 style="color:rgba(255,255,255,.65);">
+            Seu nome <span style="color:#1fc2a9;">*</span>
+          </label>
+          <input type="text" id="nome" name="nome"
+                 placeholder="Ex: Mariana Costa"
+                 autocomplete="given-name"
+                 class="f-input" required />
+          <p id="nome-error" class="text-xs mt-1.5 hidden" style="color:#f87171;">Informe seu nome.</p>
+        </div>
+
+        <!-- Empresa -->
+        <div>
+          <label for="empresa" class="block text-sm font-semibold mb-2"
+                 style="color:rgba(255,255,255,.65);">
+            Nome da sua loja <span style="color:#1fc2a9;">*</span>
+          </label>
+          <input type="text" id="empresa" name="empresa"
+                 placeholder="Ex: Studio M Moda Feminina"
+                 autocomplete="organization"
+                 class="f-input" required />
+          <p id="empresa-error" class="text-xs mt-1.5 hidden" style="color:#f87171;">Informe o nome da loja.</p>
+        </div>
+
+        <!-- Telefone -->
+        <div>
+          <label for="telefone" class="block text-sm font-semibold mb-2"
+                 style="color:rgba(255,255,255,.65);">
+            WhatsApp <span style="color:#1fc2a9;">*</span>
+          </label>
+          <div class="relative">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-base pointer-events-none select-none"
+                  style="line-height:1;">🇧🇷</span>
+            <input type="tel" id="telefone" name="telefone"
+                   placeholder="(XX) 9XXXX-XXXX"
+                   autocomplete="tel"
+                   maxlength="15"
+                   inputmode="numeric"
+                   class="f-input" required />
+          </div>
+          <p id="tel-error" class="text-xs mt-1.5 hidden" style="color:#f87171;">Formato inválido. Use: (XX) 9XXXX-XXXX</p>
+          <p id="tel-hint" class="text-xs mt-1.5" style="color:rgba(255,255,255,.3);">Usado apenas para o contato de análise.</p>
+        </div>
+
+        <!-- Faturamento -->
+        <div>
+          <label for="faturamento" class="block text-sm font-semibold mb-2"
+                 style="color:rgba(255,255,255,.65);">
+            Faturamento mensal médio da sua loja <span style="color:#1fc2a9;">*</span>
+          </label>
+          <div class="relative">
+            <select id="faturamento" name="faturamento" class="f-input cursor-pointer" required>
+              <option value=""         style="background:#1e1e1d;color:rgba(255,255,255,.35);">Selecione a faixa…</option>
+              <option value="0-20k"    style="background:#1e1e1d;color:#fff;">R$ 0 a 20k</option>
+              <option value="20-40k"   style="background:#1e1e1d;color:#fff;">R$ 20k a 40k</option>
+              <option value="40-60k"   style="background:#1e1e1d;color:#fff;">R$ 40k a 60k</option>
+              <option value="60-100k"  style="background:#1e1e1d;color:#fff;">R$ 60k a 100k</option>
+              <option value="100-300k" style="background:#1e1e1d;color:#fff;">R$ 100k a 300k</option>
+              <option value="300-500k" style="background:#1e1e1d;color:#fff;">R$ 300k a 500k</option>
+              <option value="500k-1m"  style="background:#1e1e1d;color:#fff;">R$ 500k a 1M</option>
+              <option value="acima-1m" style="background:#1e1e1d;color:#fff;">Acima de R$ 1M</option>
+            </select>
+            <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none"
+                 style="color:rgba(255,255,255,.4);"
+                 fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </div>
+          <p id="fat-error" class="text-xs mt-1.5 hidden" style="color:#f87171;">Selecione a faixa de faturamento.</p>
+        </div>
+
+        <!-- Submit -->
+        <div class="pt-1">
+          <button type="submit" id="submitBtn" class="btn-primary teal-glow w-full py-4 text-base">
+            Quero Minha Análise Gratuita →
+          </button>
+          <p class="text-center text-xs mt-3" style="color:rgba(255,255,255,.3);">
+            🔒 Dados protegidos. Não compartilhamos com terceiros.
+          </p>
+        </div>
+
+      </form>
+
+      <!-- Success state -->
+      <div id="formSuccess" class="hidden text-center py-10">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5"
+             style="background:rgba(31,194,169,.12);">
+          <svg class="w-8 h-8" style="color:#1fc2a9;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+        <h3 class="font-black text-xl mb-2" style="color:#fff;">Recebemos o seu pedido!</h3>
+        <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,.55);">
+          Redirecionando para o WhatsApp do Jhanry…<br/>
+          <span style="color:#1fc2a9;" class="font-semibold">Análise estratégica de 15 min aguardando você.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ DIFERENCIAIS (dark) ═══════════ -->
+<section class="sec-dark py-16 px-5">
+  <div class="max-w-3xl mx-auto grid md:grid-cols-3 gap-4">
+
+    <div class="card-dark p-6 text-center fade-up">
+      <div class="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl"
+           style="background:rgba(31,194,169,.1);">👗</div>
+      <h3 class="font-extrabold text-base mb-1.5">DNA de Moda</h3>
+      <p class="text-sm" style="color:rgba(255,255,255,.5);">Entendemos sazonalidade, curva ABC e giro de coleção como ninguém.</p>
+    </div>
+
+    <div class="card-dark p-6 text-center fade-up">
+      <div class="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl"
+           style="background:rgba(31,194,169,.1);">🎯</div>
+      <h3 class="font-extrabold text-base mb-1.5">Margem Preservada</h3>
+      <p class="text-sm" style="color:rgba(255,255,255,.5);">Crescemos faturamento sem destruir sua margem com descontos.</p>
+    </div>
+
+    <div class="card-dark p-6 text-center fade-up">
+      <div class="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl"
+           style="background:rgba(31,194,169,.1);">📊</div>
+      <h3 class="font-extrabold text-base mb-1.5">Resultados Visíveis</h3>
+      <p class="text-sm" style="color:rgba(255,255,255,.5);">Dashboard quinzenal em linguagem de lojista, não de marqueteiro.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FINAL CTA (dark) ═══════════ -->
+<section class="sec-dark py-20 px-5 text-center"
+         style="border-top:1px solid rgba(255,255,255,.06);">
+  <div class="max-w-2xl mx-auto fade-up">
+    <h2 class="font-black leading-tight mb-5"
+        style="font-size:clamp(1.9rem,4.5vw,3rem);">
+      Sua concorrência já está usando dados.<br/>
+      <span style="color:#1fc2a9;">Você ainda vai esperar mais um mês ruim?</span>
+    </h2>
+    <p class="mb-8 max-w-md mx-auto leading-relaxed" style="color:rgba(255,255,255,.55);">
+      Cada mês sem estratégia é uma coleção a mais pendurada no cabide.
+      Comece agora com uma análise gratuita, sem compromisso.
+    </p>
+    <a href="#formulario" class="btn-primary teal-glow pulse-btn"
+       style="font-size:1rem;padding:16px 36px;">
+      Quero Vender Minha Coleção Agora →
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER (dark) ═══════════ -->
+<footer class="sec-dark py-10 px-5 text-center"
+        style="border-top:1px solid rgba(255,255,255,.06);">
+  <div class="flex items-center justify-center mb-4">
+    <img src="./logoqarvon.png" alt="Qarvon" class="h-8 w-auto" />
+  </div>
+  <p class="text-xs" style="color:rgba(255,255,255,.3);">
+    © 2025 Qarvon Media · Estratégia de Marketing para Lojas de Moda<br/>
+    200+ lojistas transformados · 18 estados no Brasil
+  </p>
+</footer>
+
+<!-- TOAST -->
+<div id="toast"
+     class="fixed top-4 right-4 z-[100] max-w-xs text-sm font-semibold px-5 py-3 rounded-2xl shadow-2xl opacity-0"
+     style="transform:translateY(12px);" role="alert"></div>
+
+<!-- ═══════════ JAVASCRIPT ═══════════ -->
+<script>
+  /* ══ CONFIG ══ */
+  const WEBHOOK_URL  = 'https://n8n.vps.qarvon.com/webhook/lead_form_qarvon';
+  const REDIRECT_URL = 'https://api.whatsapp.com/send/?phone=5584999200001&text=Ol%C3%A1%2C+vim+da+p%C3%A1gina+de+Moda+e+quero+acelerar+minha+loja!&type=phone_number&app_absent=0';
+  const PHONE_REGEX  = /^\(\d{2}\)\s9\d{4}-\d{4}$/;
+
+  /* ══ PHONE MASK ══ */
+  const phoneEl = document.getElementById('telefone');
+
+  phoneEl.addEventListener('input', (e) => {
+    let v = e.target.value.replace(/\D/g, '');
+    if (v.length > 11) v = v.slice(0, 11);
+    let m = '';
+    if      (v.length === 0)  m = '';
+    else if (v.length <= 2)   m = `(${v}`;
+    else if (v.length <= 6)   m = `(${v.slice(0,2)}) ${v.slice(2)}`;
+    else if (v.length <= 10)  m = `(${v.slice(0,2)}) ${v.slice(2,6)}-${v.slice(6)}`;
+    else                      m = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+    e.target.value = m;
+    if (m !== '') validatePhone(false);
+  });
+
+  phoneEl.addEventListener('blur', () => validatePhone(true));
+
+  function validatePhone(showError = true) {
+    const v      = phoneEl.value;
+    const errEl  = document.getElementById('tel-error');
+    const hintEl = document.getElementById('tel-hint');
+    if (v === '') {
+      phoneEl.classList.remove('err', 'ok');
+      if (showError) {
+        phoneEl.classList.add('err');
+        errEl.textContent = 'Informe seu WhatsApp com DDD.';
+        errEl.classList.remove('hidden');
+        hintEl.classList.add('hidden');
+      } else {
+        errEl.classList.add('hidden');
+        hintEl.classList.remove('hidden');
+      }
+      return false;
+    }
+    const ok = PHONE_REGEX.test(v);
+    phoneEl.classList.toggle('err', !ok);
+    phoneEl.classList.toggle('ok',   ok);
+    if (showError) {
+      errEl.textContent = 'Formato inválido. Use: (XX) 9XXXX-XXXX';
+      errEl.classList.toggle('hidden', ok);
+    }
+    hintEl.classList.toggle('hidden', !ok);
+    return ok;
+  }
+
+  /* ══ FIELD VALIDATORS ══ */
+  function validateField(id, errId) {
+    const el  = document.getElementById(id);
+    const err = document.getElementById(errId);
+    const ok  = el.value.trim() !== '';
+    el.classList.toggle('err', !ok);
+    el.classList.toggle('ok',   ok);
+    err.classList.toggle('hidden', ok);
+    return ok;
+  }
+
+  function validateSelect(id, errId) {
+    const el  = document.getElementById(id);
+    const err = document.getElementById(errId);
+    const ok  = el.value !== '';
+    el.classList.toggle('err', !ok);
+    err.classList.toggle('hidden', ok);
+    return ok;
+  }
+
+  /* ══ FORM SUBMIT ══ */
+  document.getElementById('leadForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const v1 = validateField('nome',        'nome-error');
+    const v2 = validateField('empresa',     'empresa-error');
+    const v3 = validatePhone(true);
+    const v4 = validateSelect('faturamento','fat-error');
+
+    if (!v1 || !v2 || !v3 || !v4) {
+      showToast('Preencha todos os campos corretamente.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Enviando…';
+
+    const payload = {
+      nome:        document.getElementById('nome').value.trim(),
+      empresa:     document.getElementById('empresa').value.trim(),
+      telefone:    document.getElementById('telefone').value.trim(),
+      faturamento: document.getElementById('faturamento').value,
+      origem:      'moda',
+      timestamp:   new Date().toISOString(),
+    };
+
+    try {
+      const res = await fetch(WEBHOOK_URL, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      document.getElementById('leadForm').classList.add('hidden');
+      document.getElementById('formSuccess').classList.remove('hidden');
+      document.getElementById('sticky-bar').classList.add('bar-hidden');
+
+      setTimeout(() => { window.location.href = REDIRECT_URL; }, 2000);
+
+    } catch (err) {
+      console.error('Webhook error:', err);
+      btn.disabled = false;
+      btn.innerHTML = 'Quero Minha Análise Gratuita →';
+      showToast('Erro ao enviar. Tente novamente.', 'error');
+    }
+  });
+
+  /* ══ TOAST ══ */
+  function showToast(msg, type = 'error') {
+    const t = document.getElementById('toast');
+    t.textContent      = msg;
+    t.style.background = type === 'error' ? '#ef4444' : '#1fc2a9';
+    t.style.color      = type === 'error' ? '#fff'    : '#171716';
+    t.style.transform  = 'translateY(12px)';
+    t.style.opacity    = '0';
+    void t.offsetHeight;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  /* ══ STICKY — ocultar quando formulário visível ══ */
+  new IntersectionObserver(
+    ([e]) => document.getElementById('sticky-bar').classList.toggle('bar-hidden', e.isIntersecting),
+    { threshold: 0.15 }
+  ).observe(document.getElementById('formulario'));
+
+  /* ══ SCROLL REVEAL ══ */
+  const fadeObs = new IntersectionObserver(
+    (entries) => entries.forEach(el => {
+      if (el.isIntersecting) { el.target.classList.add('in'); fadeObs.unobserve(el.target); }
+    }),
+    { threshold: 0.08, rootMargin: '0px 0px -28px 0px' }
+  );
+  document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
+</script>
+
+</body>
+</html>
