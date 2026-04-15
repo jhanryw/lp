@@ -587,7 +587,7 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
 
 <script>
 /* ─── CONFIG ─── */
-const WEBHOOK_URL  = 'https://qarvon-n8n.uxxkgy.easypanel.host/webhook/lead_form_qarvon/';
+const WEBHOOK_URL  = 'https://qarvon-n8n.uxxkgy.easypanel.host/webhook-test/lead_form_qarvon/';
 const REDIRECT_URL = 'https://api.whatsapp.com/send/?phone=5584999200001&text=Ol%C3%A1%2C+Jhanry%21+Pesquisei+por+voc%C3%AAs+e+queria+mais+informa%C3%A7%C3%B5es&type=phone_number&app_absent=0';
 const PHONE_REGEX  = /^\(\d{2}\)\s9\d{4}-\d{4}$/;
 
@@ -653,7 +653,7 @@ document.getElementById('qarvon-form').addEventListener('submit', e => {
   const formData = new FormData(document.getElementById('qarvon-form'));
   const payload = Object.fromEntries(formData);
 
-  fetch('https://qarvon-n8n.uxxkgy.easypanel.host/webhook/lead_form_qarvon', {
+  fetch('https://qarvon-n8n.uxxkgy.easypanel.host/webhook-test/lead_form_qarvon', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
