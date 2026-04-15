@@ -636,153 +636,55 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
 <script async defer src="//www.instagram.com/embed.js"></script>
 
 <script>
-/* ─── CONFIG ─── */
-const WEBHOOK_URL  = 'https://n8n.qarvon.com/webhook/lead_form_qarvon';
-const REDIRECT_URL = 'https://wa.me/5584999200001?text=Ol%C3%A1%2C%20Jhanry!%20Vi%20um%20an%C3%BAncio%20da%20Qarvon%20e%20queria%20entender%20como%20vender%20mais%20na%20minha%20loja';
-const PHONE_REGEX  = /^\(\d{2}\)\s9\d{4}-\d{4}$/;
+  // 1. Puxa o formulário pelo ID (Certifique-se de que o ID no HTML é id="formLead")
+  const formLead = document.getElementById('formLead');
 
-/* ─── PHONE MASK ─── */
-const wppEl  = document.getElementById('wpp');
-const wppErr = document.getElementById('wpp-err');
-const wppHint = document.getElementById('wpp-hint');
+  if (formLead) {
+    formLead.addEventListener('submit', function(e) {
+      e.preventDefault(); // 2. Impede a página de recarregar
 
-wppEl.addEventListener('input', e => {
-  let v = e.target.value.replace(/\D/g, '');
-  if (v.length > 11) v = v.slice(0, 11);
-  let m = '';
-  if      (v.length === 0)  m = '';
-  else if (v.length <= 2)   m = `(${v}`;
-  else if (v.length <= 6)   m = `(${v.slice(0,2)}) ${v.slice(2)}`;
-  else if (v.length <= 10)  m = `(${v.slice(0,2)}) ${v.slice(2,6)}-${v.slice(6)}`;
-  else                      m = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
-  e.target.value = m;
-  validatePhone(false);
-});
+      // 3. Muda o texto do botão para mostrar que está carregando
+      const btnSubmit = formLead.querySelector('button[type="submit"]');
+      const textoOriginal = btnSubmit.innerHTML;
+      btnSubmit.innerHTML = 'Enviando...';
+      btnSubmit.disabled = true;
 
-function validatePhone(showError) {
-  const v = wppEl.value.trim();
-  if (v === '') {
-    wppEl.classList.remove('err','ok');
-    if (showError) {
-      wppEl.classList.add('err');
-      wppErr.textContent = 'Informe seu WhatsApp com DDD.';
-      wppErr.style.display = 'block';
-      wppHint.style.display = 'none';
-    }
-    return false;
-  }
-  if (!PHONE_REGEX.test(v)) {
-    wppEl.classList.remove('ok');
-    wppEl.classList.add('err');
-    if (showError) {
-      wppErr.textContent = 'Digite no formato (XX) 9XXXX-XXXX.';
-      wppErr.style.display = 'block';
-      wppHint.style.display = 'none';
-    }
-    return false;
-  }
-  wppEl.classList.remove('err');
-  wppEl.classList.add('ok');
-  wppErr.style.display = 'none';
-  wppHint.style.display = 'block';
-  return true;
-}
+      // 4. Coleta automaticamente todos os campos que possuem "name" no HTML
+      const formData = new FormData(formLead);
+      const data = Object.fromEntries(formData.entries());
 
-/* ─── TOAST ─── */
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3200);
-}
-
-/* ─── FORM SUBMIT ─── */
-document.getElementById('qarvon-form').addEventListener('submit', async e => {
-  e.preventDefault();
-
-  const nome     = document.getElementById('nome').value.trim();
-  const loja     = document.getElementById('loja').value.trim();
-  const telefone = wppEl.value.trim();
-  const fat      = document.getElementById('fat').value;
-  const traf     = document.getElementById('traf').value;
-
-  let valid = true;
-
-  const nomeEl = document.getElementById('nome');
-  if (!nome) { nomeEl.classList.add('err'); valid = false; }
-  else        { nomeEl.classList.remove('err'); }
-
-  const lojaEl = document.getElementById('loja');
-  if (!loja) { lojaEl.classList.add('err'); valid = false; }
-  else        { lojaEl.classList.remove('err'); }
-
-  if (!validatePhone(true)) valid = false;
-
-  const fatEl = document.getElementById('fat');
-  if (!fat) { fatEl.classList.add('err'); valid = false; }
-  else       { fatEl.classList.remove('err'); }
-
-  const trafEl = document.getElementById('traf');
-  if (!traf) { trafEl.classList.add('err'); valid = false; }
-  else        { trafEl.classList.remove('err'); }
-
-  if (!valid) { showToast('Preencha todos os campos corretamente.'); return; }
-
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Enviando…';
-
-  try {
-    await fetch(WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        nome,
-        empresa: loja,
-        telefone,
-        faturamento: fat,
-        trafego: traf,
-        origem: 'fbads',
-        timestamp: new Date().toISOString(),
-      }),
+      // 5. O Pulo do Gato: Envia os dados usando mode: 'no-cors'
+      fetch('https://n8n.qarvon.com/webhook/lead_form_qarvon', {
+        method: 'POST',
+        mode: 'no-cors', // ISSO É O QUE BURLA O ERRO VERMELHO DE CORS
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(() => {
+        // 6. Sucesso "cego": Como o no-cors esconde a resposta, assumimos sucesso.
+        formLead.style.display = 'none'; // Esconde o formulário
+        
+        // 7. Cria a mensagem de agradecimento na tela
+        const mensagemDiv = document.createElement('div');
+        mensagemDiv.innerHTML = `
+          <h3 style="color: #4CAF50; margin-bottom: 10px;">Cadastro realizado com sucesso!</h3>
+          <p>Nossa equipe analisará seu perfil e entrará em contato em breve.</p>
+        `;
+        mensagemDiv.style.textAlign = 'center';
+        mensagemDiv.style.padding = '20px';
+        formLead.parentNode.appendChild(mensagemDiv);
+      })
+      .catch((error) => {
+        // Se a internet da pessoa cair no momento do clique, devolvemos o botão.
+        console.error('Erro de rede:', error);
+        btnSubmit.innerHTML = textoOriginal;
+        btnSubmit.disabled = false;
+        alert("Ocorreu um erro de conexão. Verifique sua internet e tente novamente.");
+      });
     });
-
-    document.getElementById('qarvon-form').style.display = 'none';
-    document.getElementById('form-ok').style.display     = 'block';
-    setTimeout(() => { window.location.href = REDIRECT_URL; }, 2000);
-
-  } catch {
-    btn.disabled    = false;
-    btn.textContent = 'Quero meu diagnóstico gratuito →';
-    showToast('Erro ao enviar. Tente novamente.');
   }
-});
-
-/* ─── FADE-UP OBSERVER ─── */
-const fadeObs = new IntersectionObserver(entries => {
-  entries.forEach(el => {
-    if (el.isIntersecting) { el.target.classList.add('in'); fadeObs.unobserve(el.target); }
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
-
-/* ─── STICKY BAR: esconde quando form está visível ─── */
-const stickyBar  = document.getElementById('sticky-bar');
-const formSec    = document.getElementById('form');
-const stickyObs  = new IntersectionObserver(entries => {
-  if (window.innerWidth < 768) {
-    stickyBar.style.display = entries[0].isIntersecting ? 'none' : 'block';
-  }
-}, { threshold: 0.1 });
-if (formSec) stickyObs.observe(formSec);
-
-/* ─── SMOOTH SCROLL ─── */
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const t = document.querySelector(a.getAttribute('href'));
-    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-  });
-});
 </script>
 </body>
 </html>
