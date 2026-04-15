@@ -791,49 +791,26 @@
   }
 
   /* ══ FORM SUBMIT ══ */
-  document.getElementById('leadForm').addEventListener('submit', async function(e) {
+  document.getElementById('leadForm').addEventListener('submit', e => {
     e.preventDefault();
 
-    const v1 = validateField('nome',        'nome-error');
-    const v2 = validateField('empresa',     'empresa-error');
-    const v3 = validatePhone(true);
-    const v4 = validateSelect('faturamento','fat-error');
+    const formData = new FormData(document.getElementById('leadForm'));
+    const dataRaiz = new URLSearchParams(formData);
 
-    if (!v1 || !v2 || !v3 || !v4) {
-      showToast('Preencha todos os campos corretamente.', 'error');
-      return;
-    }
-
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Enviando…';
-
-    const payload = {
-      nome:        document.getElementById('nome').value.trim(),
-      empresa:     document.getElementById('empresa').value.trim(),
-      telefone:    document.getElementById('telefone').value.trim(),
-      faturamento: document.getElementById('faturamento').value,
-      origem:      'moda',
-      timestamp:   new Date().toISOString(),
-    };
-
-    fetch(WEBHOOK_URL, {
-      method:  'POST',
-      mode:    'no-cors',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body:    new URLSearchParams(payload).toString(),
+    fetch('https://n8n.qarvon.com/webhook/lead_form_qarvon', {
+      method: 'POST',
+      body: dataRaiz,
     })
     .then(() => {
-      document.getElementById('leadForm').classList.add('hidden');
-      document.getElementById('formSuccess').classList.remove('hidden');
-      document.getElementById('sticky-bar').classList.add('bar-hidden');
-      setTimeout(() => { window.location.href = REDIRECT_URL; }, 2000);
+      document.getElementById('leadForm').style.display = 'none';
+      const successDiv = document.createElement('div');
+      successDiv.style.textAlign = 'center';
+      successDiv.style.padding = '40px 20px';
+      successDiv.innerHTML = '<h2>Cadastro realizado com sucesso! Nossa equipe entrará em contato.</h2>';
+      document.getElementById('leadForm').parentNode.insertBefore(successDiv, document.getElementById('leadForm').nextSibling);
     })
     .catch(err => {
-      console.error('Webhook error:', err);
-      btn.disabled = false;
-      btn.innerHTML = 'Quero Minha Análise Gratuita →';
-      showToast('Erro ao enviar. Tente novamente.', 'error');
+      console.error('Erro:', err);
     });
   });
 

@@ -700,67 +700,23 @@ function showToast(msg) {
 document.getElementById('qarvon-form').addEventListener('submit', e => {
   e.preventDefault();
 
-  /* Extrai valores pelos IDs reais do HTML */
-  const nome     = document.getElementById('nome').value.trim();
-  const loja     = document.getElementById('loja').value.trim();
-  const telefone = wppEl.value.trim();
-  const fat      = document.getElementById('fat').value;
-  const traf     = document.getElementById('traf').value;
+  const formData = new FormData(document.getElementById('qarvon-form'));
+  const dataRaiz = new URLSearchParams(formData);
 
-  /* Validação campo a campo */
-  let valid = true;
-
-  const nomeEl = document.getElementById('nome');
-  if (!nome) { nomeEl.classList.add('err'); valid = false; }
-  else        { nomeEl.classList.remove('err'); }
-
-  const lojaEl = document.getElementById('loja');
-  if (!loja) { lojaEl.classList.add('err'); valid = false; }
-  else        { lojaEl.classList.remove('err'); }
-
-  if (!validatePhone(true)) valid = false;
-
-  const fatEl = document.getElementById('fat');
-  if (!fat) { fatEl.classList.add('err'); valid = false; }
-  else       { fatEl.classList.remove('err'); }
-
-  const trafEl = document.getElementById('traf');
-  if (!traf) { trafEl.classList.add('err'); valid = false; }
-  else        { trafEl.classList.remove('err'); }
-
-  if (!valid) { showToast('Preencha todos os campos corretamente.'); return; }
-
-  /* Loading state */
-  const btn = document.getElementById('submit-btn');
-  btn.disabled    = true;
-  btn.textContent = 'Enviando…';
-
-  const payload = {
-    nome,
-    empresa:     loja,
-    telefone,
-    faturamento: fat,
-    trafego:     traf,
-    origem:      'organico',
-    timestamp:   new Date().toISOString(),
-  };
-
-  fetch(WEBHOOK_URL, {
-    method:  'POST',
-    mode:    'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body:    new URLSearchParams(payload).toString(),
+  fetch('https://n8n.qarvon.com/webhook/lead_form_qarvon', {
+    method: 'POST',
+    body: dataRaiz,
   })
   .then(() => {
     document.getElementById('qarvon-form').style.display = 'none';
-    document.getElementById('form-ok').style.display     = 'block';
-    setTimeout(() => { window.location.href = REDIRECT_URL; }, 2000);
+    const successDiv = document.createElement('div');
+    successDiv.style.textAlign = 'center';
+    successDiv.style.padding = '40px 20px';
+    successDiv.innerHTML = '<h2>Cadastro realizado com sucesso! Nossa equipe entrará em contato.</h2>';
+    document.getElementById('qarvon-form').parentNode.insertBefore(successDiv, document.getElementById('qarvon-form').nextSibling);
   })
   .catch(err => {
-    console.error('[Qarvon] Falha no envio:', err);
-    btn.disabled    = false;
-    btn.textContent = 'Quero meu diagnóstico gratuito →';
-    showToast('Erro ao enviar. Verifique sua conexão e tente novamente.');
+    console.error('[Qarvon] Erro:', err);
   });
 });
 
