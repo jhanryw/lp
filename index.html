@@ -439,15 +439,9 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
     <h2 class="f-title fade-up" style="font-size:clamp(1.5rem,2.8vw,2rem);margin-top:.8rem;margin-bottom:.4rem">Veja como geramos resultado para lojas de roupa como a sua</h2>
     <p class="fade-up" style="font-size:.875rem;color:var(--muted);margin-bottom:0">Cases de clientes atendidos pela Qarvon em 18 estados.</p>
 
-    <!--
-      ══════════════════════════════════════════════════════
-      PARA INCORPORAR O VÍDEO DO INSTAGRAM:
-      1. Vá até o Reel/post no Instagram
-      2. Clique em "···" → "Incorporar" → copie o código
-      3. Substitua o bloco .ig-box abaixo pelo <blockquote> copiado
-      4. O script instagram já está incluído no fim da página
-      ══════════════════════════════════════════════════════
-    -->
+    <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DVL4FliDpCf/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
+    </blockquote>
+    <script async src="//www.instagram.com/embed.js"></script>
     <div class="ig-box fade-up" id="ig-embed-area">
       <div class="ig-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -697,15 +691,17 @@ function showToast(msg) {
 }
 
 /* ─── FORM SUBMIT ─── */
-document.getElementById('qarvon-form').addEventListener('submit', async e => {
+document.getElementById('qarvon-form').addEventListener('submit', e => {
   e.preventDefault();
 
+  /* ── 1. Extrai valores ── */
   const nome     = document.getElementById('nome').value.trim();
   const loja     = document.getElementById('loja').value.trim();
   const telefone = wppEl.value.trim();
   const fat      = document.getElementById('fat').value;
   const traf     = document.getElementById('traf').value;
 
+  /* ── 2. Validação ── */
   let valid = true;
 
   const nomeEl = document.getElementById('nome');
@@ -728,35 +724,39 @@ document.getElementById('qarvon-form').addEventListener('submit', async e => {
 
   if (!valid) { showToast('Preencha todos os campos corretamente.'); return; }
 
+  /* ── 3. UI de loading ── */
   const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
+  btn.disabled    = true;
   btn.textContent = 'Enviando…';
 
-  try {
-    await fetch(WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        nome,
-        empresa: loja,
-        telefone,
-        faturamento: fat,
-        trafego: traf,
-        origem: 'organico',
-        timestamp: new Date().toISOString(),
-      }),
-    });
+  /* ── 4. Payload como URL-encoded (único Content-Type simples aceito em no-cors)
+          application/json seria removido silenciosamente pelo browser antes de sair ── */
+  const payload = new URLSearchParams({
+    nome,
+    empresa:     loja,
+    telefone,
+    faturamento: fat,
+    trafego:     traf,
+    origem:      'organico',
+    timestamp:   new Date().toISOString(),
+  });
 
-    document.getElementById('qarvon-form').style.display = 'none';
-    document.getElementById('form-ok').style.display     = 'block';
-    setTimeout(() => { window.location.href = REDIRECT_URL; }, 2000);
-
-  } catch {
-    btn.disabled    = false;
-    btn.textContent = 'Quero meu diagnóstico gratuito →';
-    showToast('Erro ao enviar. Tente novamente.');
-  }
-});
+  /* ── 5. Disparo com no-cors — resposta será sempre opaca (status 0)
+          O .then() dispara assim que o browser confirma que a requisição saiu ── */
+  fetch('https://n8n.qarvon.com/webhook/lead_form_qarvon', {
+  method: 'POST',
+  mode: 'no-cors', // <-- O comando que força a passagem pelo bloqueio
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(seusDados)
+})
+.then(response => {
+    // Alerta: Com 'no-cors', a resposta do servidor fica "opaca". 
+    // O seu JS não conseguirá ler o que o n8n devolveu, mas o dado chegará lá.
+    console.log("Enviado para o n8n");
+})
+.catch(error => console.error("Erro:", error));
 
 /* ─── FADE-UP OBSERVER ─── */
 const fadeObs = new IntersectionObserver(entries => {
