@@ -155,37 +155,6 @@ nav{
 .dor-card h3{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:1rem;margin-bottom:.6rem;color:#fff}
 .dor-card p{font-size:.875rem;color:var(--muted);line-height:1.7}
 
-/* ─── INSTAGRAM VIDEO ─── */
-.ig-box{
-  border:.5px solid var(--border);background:#1a1a18;
-  padding:4rem 2rem;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;margin:2.5rem 0;gap:1.5rem;
-  position:relative;overflow:hidden;min-height:280px;
-}
-.ig-box::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(circle at center,rgba(31,194,169,.04) 0%,transparent 70%);
-  pointer-events:none;
-}
-.ig-icon{
-  width:52px;height:52px;border-radius:14px;flex-shrink:0;
-  background:linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
-  display:flex;align-items:center;justify-content:center;
-}
-.ig-icon svg{width:26px;height:26px;fill:#fff}
-.ig-caption p{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:.4rem}
-.ig-caption span{font-size:.82rem;color:var(--muted)}
-.btn-ig{
-  display:inline-flex;align-items:center;gap:.6rem;
-  background:transparent;border:.5px solid var(--teal);color:var(--teal);
-  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;
-  font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;
-  padding:.75rem 1.6rem;cursor:pointer;
-  transition:background .18s;text-decoration:none;
-}
-.btn-ig:hover{background:rgba(31,194,169,.08)}
-
 /* ─── PARA QUEM ─── */
 .pq-card{
   border:.5px solid var(--border-teal);
@@ -453,43 +422,6 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
 
 <div class="divider"></div>
 
-<!-- ═══ RESULTADOS (Instagram) ═══ -->
-<section class="section section--dark" id="resultados">
-  <div class="wrap--sm">
-    <span class="f-label fade-up">Resultados reais</span>
-    <h2 class="f-title fade-up" style="font-size:clamp(1.5rem,2.8vw,2rem);margin-top:.8rem;margin-bottom:.4rem">Veja como geramos resultado para lojas de roupa como a sua</h2>
-    <p class="fade-up" style="font-size:.875rem;color:var(--muted);margin-bottom:0">Cases de clientes atendidos pela Qarvon em 18 estados.</p>
-
-    <!--
-      ══════════════════════════════════════════════════════
-      PARA INCORPORAR O VÍDEO DO INSTAGRAM:
-      1. Vá até o Reel/post no Instagram
-      2. Clique em "···" → "Incorporar" → copie o código
-      3. Substitua o bloco .ig-box abaixo pelo <blockquote> copiado
-      4. O script instagram já está incluído no fim da página
-      ══════════════════════════════════════════════════════
-    -->
-    <div class="ig-box fade-up" id="ig-embed-area">
-      <div class="ig-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-        </svg>
-      </div>
-      <div class="ig-caption">
-        <p>Cases de clientes Qarvon</p>
-        <span>Lojas de moda que escalaram faturamento com método próprio</span>
-      </div>
-      <!-- ↓ Substitua o href pelo link do seu perfil ou post específico -->
-      <a href="https://www.instagram.com/qarvon.media" target="_blank" rel="noopener" class="btn-ig">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-        Assistir no Instagram
-      </a>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
 <!-- ═══ PARA QUEM ═══ -->
 <section class="section" id="para-quem">
   <div class="wrap">
@@ -652,9 +584,6 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
     <p>© 2025 Qarvon — Aceleradora de Varejo · Todos os direitos reservados</p>
   </div>
 </footer>
-
-<!-- Instagram embed script (ativado quando você colar o código do post) -->
-<script async defer src="//www.instagram.com/embed.js"></script>
 
 <script>
 /* ─── CONFIG ─── */
