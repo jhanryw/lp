@@ -735,17 +735,7 @@ document.getElementById('qarvon-form').addEventListener('submit', e => {
   btn.disabled    = true;
   btn.textContent = 'Enviando…';
 
-  /*
-   * CORS FIX — mode: 'no-cors'
-   * ─────────────────────────────────────────────────────────────
-   * • no-cors elimina o preflight OPTIONS → sem erro de CORS
-   * • A resposta volta opaca: status=0, body ilegível — isso é normal
-   * • Content-Type DEVE ser application/x-www-form-urlencoded
-   *   (é o único Content-Type "simples" aceito em no-cors mode)
-   *   application/json seria silenciosamente removido pelo browser
-   * ─────────────────────────────────────────────────────────────
-   */
-  const payload = new URLSearchParams({
+  const payload = {
     nome,
     empresa:     loja,
     telefone,
@@ -753,26 +743,24 @@ document.getElementById('qarvon-form').addEventListener('submit', e => {
     trafego:     traf,
     origem:      'organico',
     timestamp:   new Date().toISOString(),
-  });
+  };
 
   fetch(WEBHOOK_URL, {
     method:  'POST',
-    mode:    'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body:    payload.toString(),
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload),
   })
-  .then(() => {
-    /* Resposta opaca — assumimos sucesso e mostramos UI de confirmação */
+  .then(res => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     document.getElementById('qarvon-form').style.display = 'none';
     document.getElementById('form-ok').style.display     = 'block';
     setTimeout(() => { window.location.href = REDIRECT_URL; }, 2000);
   })
   .catch(err => {
-    /* Só cai aqui em falha real de rede (offline, DNS, timeout) */
-    console.error('[Qarvon] Falha de rede:', err);
+    console.error('[Qarvon] Falha no envio:', err);
     btn.disabled    = false;
     btn.textContent = 'Quero meu diagnóstico gratuito →';
-    showToast('Erro de rede. Verifique sua conexão e tente novamente.');
+    showToast('Erro ao enviar. Verifique sua conexão e tente novamente.');
   });
 });
 

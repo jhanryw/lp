@@ -817,27 +817,24 @@
       timestamp:   new Date().toISOString(),
     };
 
-    try {
-      const res = await fetch(WEBHOOK_URL, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(payload),
-      });
-
+    fetch(WEBHOOK_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+    })
+    .then(res => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
       document.getElementById('leadForm').classList.add('hidden');
       document.getElementById('formSuccess').classList.remove('hidden');
       document.getElementById('sticky-bar').classList.add('bar-hidden');
-
       setTimeout(() => { window.location.href = REDIRECT_URL; }, 2000);
-
-    } catch (err) {
+    })
+    .catch(err => {
       console.error('Webhook error:', err);
       btn.disabled = false;
       btn.innerHTML = 'Quero Minha Análise Gratuita →';
       showToast('Erro ao enviar. Tente novamente.', 'error');
-    }
+    });
   });
 
   /* ══ TOAST ══ */
