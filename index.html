@@ -7,6 +7,27 @@
 <meta name="description" content="A Qarvon implanta sistemas de aquisição digital que transformam tráfego pago em giro de estoque e faturamento previsível para lojas de roupa.">
 <link rel="icon" type="image/png" href="./logoqarvon.png">
 
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1923959278550505');
+fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1923959278550505&ev=PageView&noscript=1"/></noscript>
+
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){
+  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "ioe18n2kk0");
+</script>
+
 <!-- Helvetica Neue via system stack — zero request externo -->
 
 <style>
@@ -709,15 +730,13 @@ document.getElementById('qarvon-form').addEventListener('submit', e => {
     body: JSON.stringify(payload),
   })
   .then(() => {
-    document.getElementById('qarvon-form').style.display = 'none';
-    const successDiv = document.createElement('div');
-    successDiv.style.textAlign = 'center';
-    successDiv.style.padding = '40px 20px';
-    successDiv.innerHTML = '<h2>Cadastro realizado com sucesso! Nossa equipe entrará em contato.</h2>';
-    document.getElementById('qarvon-form').parentNode.insertBefore(successDiv, document.getElementById('qarvon-form').nextSibling);
+    fbq('track', 'Lead');
+    window.location.href = 'https://wa.me/5584999200001?text=Ol%C3%A1%2C%20Jhanry!%20Vi%20um%20an%C3%BAncio%20da%20Qarvon%20e%20queria%20vender%20mais%20na%20minha%20loja';
   })
   .catch(err => {
     console.error('[Qarvon] Erro:', err);
+    fbq('track', 'Lead');
+    window.location.href = 'https://wa.me/5584999200001?text=Ol%C3%A1%2C%20Jhanry!%20Vi%20um%20an%C3%BAncio%20da%20Qarvon%20e%20queria%20vender%20mais%20na%20minha%20loja';
   });
 });
 
