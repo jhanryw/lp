@@ -574,24 +574,24 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
     <form id="qarvon-form" novalidate>
       <div class="field">
         <label for="nome">Seu nome</label>
-        <input id="nome" type="text" placeholder="Nome completo" autocomplete="name">
+        <input id="nome" name="nome" type="text" placeholder="Nome completo" autocomplete="name">
       </div>
       <div class="field">
         <label for="loja">Nome da loja / marca</label>
-        <input id="loja" type="text" placeholder="Ex: Studio Moda, Boutique X..." autocomplete="organization">
+        <input id="loja" name="loja" type="text" placeholder="Ex: Studio Moda, Boutique X..." autocomplete="organization">
       </div>
       <div class="field">
         <label for="wpp">WhatsApp</label>
         <div style="position:relative;display:flex;align-items:center">
           <span style="position:absolute;left:1rem;font-size:.9rem;pointer-events:none;line-height:1;z-index:1">🇧🇷</span>
-          <input id="wpp" type="tel" placeholder="(XX) 9XXXX-XXXX" style="padding-left:2.8rem" autocomplete="tel">
+          <input id="wpp" name="wpp" type="tel" placeholder="(XX) 9XXXX-XXXX" style="padding-left:2.8rem" autocomplete="tel">
         </div>
         <span class="field-error" id="wpp-err"></span>
         <span class="field-hint" id="wpp-hint">Usado apenas para o diagnóstico.</span>
       </div>
       <div class="field">
         <label for="fat">Faturamento mensal atual</label>
-        <select id="fat">
+        <select id="fat" name="fat">
           <option value="">Selecione a faixa...</option>
           <option value="abaixo-20k">Abaixo de R$20.000</option>
           <option value="20-60k">R$20.000 – R$60.000</option>
@@ -602,7 +602,7 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
       </div>
       <div class="field">
         <label for="traf">Você já fez tráfego pago antes?</label>
-        <select id="traf">
+        <select id="traf" name="traf">
           <option value="">Selecione...</option>
           <option value="sim-sem-resultado">Sim, mas sem resultado claro</option>
           <option value="sim-quer-escalar">Sim, e quero escalar o que funciona</option>
