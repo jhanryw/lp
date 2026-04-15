@@ -797,7 +797,7 @@
     const formData = new FormData(document.getElementById('leadForm'));
     const payload = Object.fromEntries(formData);
 
-    fetch('https://qarvon-n8n.uxxkgy.easypanel.host/webhook-test/lead_form_qarvon', {
+    fetch('https://qarvon-n8n.uxxkgy.easypanel.host/webhook/lead_form_qarvon', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
