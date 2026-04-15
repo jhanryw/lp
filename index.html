@@ -705,6 +705,7 @@ document.getElementById('qarvon-form').addEventListener('submit', e => {
 
   fetch('https://qarvon-n8n.uxxkgy.easypanel.host/webhook-test/lead_form_qarvon', {
     method: 'POST',
+    mode: 'no-cors',
     body: dataRaiz,
   })
   .then(() => {

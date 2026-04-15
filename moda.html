@@ -797,8 +797,9 @@
     const formData = new FormData(document.getElementById('leadForm'));
     const dataRaiz = new URLSearchParams(formData);
 
-    fetch('https://n8n.qarvon.com/webhook/lead_form_qarvon', {
+    fetch('https://qarvon-n8n.uxxkgy.easypanel.host/webhook-test/lead_form_qarvon', {
       method: 'POST',
+      mode: 'no-cors',
       body: dataRaiz,
     })
     .then(() => {
