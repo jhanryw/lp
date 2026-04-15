@@ -638,7 +638,7 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
 <script>
 /* ─── CONFIG ─── */
 const WEBHOOK_URL  = 'https://n8n.qarvon.com/webhook/lead_form_qarvon';
-const REDIRECT_URL = 'https://api.whatsapp.com/send/?phone=5584999200001&text=Ol%C3%A1%2C+Jhanry%21+Pesquisei+por+voc%C3%AAs+e+queria+mais+informa%C3%A7%C3%B5es&type=phone_number&app_absent=0';
+const REDIRECT_URL = 'https://wa.me/5584999200001?text=Ol%C3%A1%2C%20Jhanry!%20Vi%20um%20an%C3%BAncio%20da%20Qarvon%20e%20queria%20entender%20como%20vender%20mais%20na%20minha%20loja';
 const PHONE_REGEX  = /^\(\d{2}\)\s9\d{4}-\d{4}$/;
 
 /* ─── PHONE MASK ─── */
@@ -742,7 +742,7 @@ document.getElementById('qarvon-form').addEventListener('submit', async e => {
         telefone,
         faturamento: fat,
         trafego: traf,
-        origem: 'organico',
+        origem: 'fbads',
         timestamp: new Date().toISOString(),
       }),
     });
