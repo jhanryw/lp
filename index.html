@@ -528,10 +528,12 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
       <div class="field">
         <label for="nome">Seu nome</label>
         <input id="nome" name="nome" type="text" placeholder="Nome completo" autocomplete="name">
+        <span class="field-error" id="nome-err"></span>
       </div>
       <div class="field">
         <label for="loja">Nome da loja / marca</label>
         <input id="loja" name="loja" type="text" placeholder="Ex: Studio Moda, Boutique X..." autocomplete="organization">
+        <span class="field-error" id="loja-err"></span>
       </div>
       <div class="field">
         <label for="wpp">WhatsApp</label>
@@ -552,6 +554,7 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
           <option value="150-500k">R$150.000 – R$500.000</option>
           <option value="acima-500k">Acima de R$500.000</option>
         </select>
+        <span class="field-error" id="fat-err"></span>
       </div>
       <div class="field">
         <label for="traf">Você já fez tráfego pago antes?</label>
@@ -561,6 +564,7 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
           <option value="sim-quer-escalar">Sim, e quero escalar o que funciona</option>
           <option value="nunca">Nunca fiz tráfego pago</option>
         </select>
+        <span class="field-error" id="traf-err"></span>
       </div>
       <button type="submit" id="submit-btn" class="btn-submit">Quero meu diagnóstico gratuito →</button>
     </form>
@@ -650,6 +654,68 @@ function showToast(msg) {
 document.getElementById('qarvon-form').addEventListener('submit', e => {
   e.preventDefault();
 
+  /* — helpers de erro — */
+  function setErr(id, msg) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg;
+    el.style.display = msg ? 'block' : 'none';
+  }
+  function markField(inputId, hasErr) {
+    const el = document.getElementById(inputId);
+    if (!el) return;
+    el.classList.toggle('err', hasErr);
+    el.classList.toggle('ok', !hasErr);
+  }
+
+  /* — validação — */
+  let ok = true;
+
+  const nome = document.getElementById('nome').value.trim();
+  if (!nome) {
+    setErr('nome-err', 'Informe seu nome completo.');
+    markField('nome', true);
+    ok = false;
+  } else {
+    setErr('nome-err', '');
+    markField('nome', false);
+  }
+
+  const loja = document.getElementById('loja').value.trim();
+  if (!loja) {
+    setErr('loja-err', 'Informe o nome da sua loja ou marca.');
+    markField('loja', true);
+    ok = false;
+  } else {
+    setErr('loja-err', '');
+    markField('loja', false);
+  }
+
+  if (!validatePhone(true)) ok = false;
+
+  const fat = document.getElementById('fat').value;
+  if (!fat) {
+    setErr('fat-err', 'Selecione a faixa de faturamento.');
+    document.getElementById('fat').classList.add('err');
+    ok = false;
+  } else {
+    setErr('fat-err', '');
+    document.getElementById('fat').classList.remove('err');
+  }
+
+  const traf = document.getElementById('traf').value;
+  if (!traf) {
+    setErr('traf-err', 'Selecione uma opção.');
+    document.getElementById('traf').classList.add('err');
+    ok = false;
+  } else {
+    setErr('traf-err', '');
+    document.getElementById('traf').classList.remove('err');
+  }
+
+  if (!ok) return; /* bloqueia envio se algum campo inválido */
+
+  /* — envio — */
   const formData = new FormData(document.getElementById('qarvon-form'));
   const payload = Object.fromEntries(formData);
 
