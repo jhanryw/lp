@@ -295,6 +295,30 @@ nav{
 footer{padding:1.75rem 0;border-top:.5px solid var(--border)}
 footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
 
+/* ─── PROVA SOCIAL ─── */
+.proof-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:.5px solid var(--border);margin-top:3.5rem}
+.proof-card{background:#171716;padding:2.2rem}
+.proof-card-tag{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;margin-bottom:.75rem}
+.proof-card-name{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:1.1rem;color:#fff;margin-bottom:.5rem}
+.proof-card-result{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:1.4rem;color:var(--teal);line-height:1.2;margin-bottom:.25rem}
+.proof-card-time{font-size:.73rem;color:var(--muted);margin-bottom:1.1rem}
+.proof-card-desc{font-size:.825rem;color:var(--muted);line-height:1.7}
+@media(max-width:900px){.proof-cards{grid-template-columns:1fr}}
+
+/* ─── BADGE NEGATIVO ─── */
+.badge--no{background:rgba(231,76,60,.1);color:#e74c3c}
+.pq-card--no{border-color:rgba(231,76,60,.18)}
+.pq-list--no li::before{color:#e74c3c}
+
+/* ─── MID CTA ─── */
+.mid-cta{padding:3rem 0;background:var(--surface);border-top:.5px solid var(--border);border-bottom:.5px solid var(--border)}
+
+/* ─── NEXT STEPS ─── */
+.next-steps{display:flex;flex-direction:column;gap:.65rem;margin:2rem auto 0;max-width:420px;text-align:left}
+.next-step{display:flex;align-items:flex-start;gap:.85rem;font-size:.82rem;color:var(--muted);line-height:1.6}
+.next-step-num{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;color:var(--teal);font-size:.75rem;min-width:1.4rem;padding-top:.05rem}
+.scarcity-note{font-size:.76rem;color:rgba(255,255,255,.35);text-align:center;margin-top:1.75rem;border-top:.5px solid var(--border);padding-top:1.25rem}
+
 /* ─── FADE-UP ─── */
 .fade-up{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease}
 .fade-up.in{opacity:1;transform:none}
@@ -360,18 +384,18 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
 <section class="hero" id="topo">
   <div class="wrap">
     <div class="fade-up">
-      <span class="f-label">Aceleradora de Varejo — Lojas de Roupa</span>
+      <span class="f-label">Para donos de lojas de roupas que já investem em tráfego pago</span>
     </div>
-    <h1 class="fade-up">Sua loja tem produto. Falta o sistema<br>que transforma isso <em>em caixa toda semana.</em></h1>
-    <p class="hero-sub fade-up">A Qarvon implanta estruturas de aquisição digital que geram giro de estoque previsível — com custo por venda controlado, funil que converte e cliente que volta.</p>
+    <h1 class="fade-up">Sua loja tem tráfego.<br>Falta o sistema que transforma isso <em>em giro previsível todo mês.</em></h1>
+    <p class="hero-sub fade-up">A Qarvon constrói estruturas de aquisição digital que transformam cliques em vendas constantes — com custo por pedido rastreável, funil que filtra intenção real de compra e estoque que gira.</p>
     <div class="cta-row fade-up">
       <a href="#form" class="btn-primary">Quero meu diagnóstico gratuito →</a>
       <a href="#metodo" class="btn-ghost">Ver como funciona</a>
     </div>
     <div class="hero-proof fade-up">
       <div>
-        <div class="proof-n">+200</div>
-        <div class="proof-l">lojistas diagnosticados</div>
+        <div class="proof-n">+R$50M</div>
+        <div class="proof-l">em vendas geradas para lojas de moda</div>
       </div>
       <div>
         <div class="proof-n">3×</div>
@@ -432,15 +456,70 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
       <div class="pq-head"><span class="badge badge--yes">Para você se...</span></div>
       <ul class="pq-list">
         <li>Você tem loja de roupa — masculina, feminina ou ambas — física, online ou os dois</li>
-        <li>Fatura entre R$20k e R$500k/mês mas sem um canal digital estruturado gerando pedido todo dia</li>
+        <li>Fatura a partir de R$50k/mês mas sem um canal digital estruturado gerando pedido todo dia</li>
         <li>Seu estoque existe, o produto tem qualidade — mas o giro é lento e imprevisível</li>
         <li>Já fez tráfego antes e sabe que o problema estava na execução, não no canal</li>
         <li>Quer ver número real: custo por pedido, ROAS, giro de estoque — não alcance de post</li>
         <li>Está disposta a implementar o que for definido, não só ouvir estratégia</li>
       </ul>
+      <div class="pq-card pq-card--no fade-up" style="margin-top:1rem">
+        <div class="pq-head"><span class="badge badge--no">Não é para você se...</span></div>
+        <ul class="pq-list pq-list--no">
+          <li>Você ainda está testando se quer empreender</li>
+          <li>Sua loja tem menos de 6 meses de operação</li>
+          <li>Fatura abaixo de R$50k/mês</li>
+          <li>Você busca resultado sem processo ou comprometimento</li>
+          <li>Prefere delegar tudo sem entender o que está sendo feito</li>
+          <li>Já está satisfeito com a previsibilidade atual</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
+
+<div class="divider"></div>
+
+<!-- ═══ PROVA SOCIAL ═══ -->
+<section class="section" id="resultados">
+  <div class="wrap">
+    <span class="f-label fade-up">Resultados Reais — Clientes Ativos</span>
+    <h2 class="f-title fade-up" style="font-size:clamp(1.6rem,2.8vw,2.1rem);margin-top:.8rem;max-width:640px">Lojas que pararam de depender de sazonalidade e sorte para vender.</h2>
+
+    <div class="proof-cards">
+      <div class="proof-card fade-up">
+        <div class="proof-card-tag">Moda Feminina · SP</div>
+        <div class="proof-card-name">Bella Arco</div>
+        <div class="proof-card-result">De R$45k para R$190k/mês</div>
+        <div class="proof-card-time">em 4 meses</div>
+        <p class="proof-card-desc">Investia em tráfego mas sem rastreabilidade. Custo por venda era desconhecido. Implantamos funil completo com Meta Ads + triagem no WhatsApp — hoje cada real investido tem retorno medido.</p>
+      </div>
+      <div class="proof-card fade-up">
+        <div class="proof-card-tag">Streetwear · RJ</div>
+        <div class="proof-card-name">Urban Roots</div>
+        <div class="proof-card-result">Custo por venda reduzido em 58%</div>
+        <div class="proof-card-time">em 60 dias</div>
+        <p class="proof-card-desc">Escalava orçamento mas o lucro não acompanhava. Reestruturamos campanha com CPA definido por SKU — o faturamento continuou crescendo, e a margem parou de encolher.</p>
+      </div>
+      <div class="proof-card fade-up">
+        <div class="proof-card-tag">Plus Size · MG</div>
+        <div class="proof-card-name">Curvas &amp; Cia</div>
+        <div class="proof-card-result">Primeiro mês previsível após 2 anos de instabilidade</div>
+        <div class="proof-card-time">resultado em 90 dias</div>
+        <p class="proof-card-desc">Dependia de promoção e sazonalidade para vender. Hoje tem funil de aquisição ativo, estoque girando com consistência e margem protegida.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ MID CTA ═══ -->
+<div class="mid-cta">
+  <div class="wrap--sm" style="text-align:center">
+    <p class="fade-up" style="font-size:.85rem;color:var(--muted);margin-bottom:1.25rem">Reconheceu algum desses problemas na sua operação?</p>
+    <a href="#form" class="btn-primary fade-up">Quero meu diagnóstico gratuito →</a>
+  </div>
+</div>
 
 <div class="divider"></div>
 
@@ -518,6 +597,13 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
     <span class="f-label fade-up">Próximo passo</span>
     <h2 class="f-title fade-up" style="font-size:clamp(1.8rem,3.5vw,2.6rem);margin-top:.8rem;margin-bottom:1rem">Diagnóstico gratuito de 30 minutos.<br>Sem pitch. Sem enrolação.</h2>
     <p class="fade-up" style="font-size:.875rem;color:var(--muted);max-width:460px;margin:0 auto">Você preenche o formulário. A gente analisa. Se fizer sentido para os dois lados, mostramos exatamente o que pode ser feito na sua operação — com número, prazo e método.</p>
+
+    <div class="next-steps fade-up">
+      <div class="next-step"><span class="next-step-num">01</span><span>Você preenche abaixo — leva menos de 2 minutos</span></div>
+      <div class="next-step"><span class="next-step-num">02</span><span>Confirmamos no WhatsApp em até 2 horas úteis</span></div>
+      <div class="next-step"><span class="next-step-num">03</span><span>Call de 30 min: diagnóstico real, sem pitch, sem compromisso</span></div>
+    </div>
+    <p class="scarcity-note fade-up">Atendemos no máximo 5 novas lojas por mês. Se a agenda estiver fechada, você entra na lista de espera.</p>
   </div>
 
   <div class="form-card fade-up" id="form-card">
@@ -548,10 +634,10 @@ footer p{font-size:.73rem;color:rgba(255,255,255,.22);text-align:center}
         <label for="fat">Faturamento mensal atual</label>
         <select id="fat" name="fat">
           <option value="">Selecione a faixa...</option>
-          <option value="abaixo-20k">Abaixo de R$20.000</option>
-          <option value="20-60k">R$20.000 – R$60.000</option>
-          <option value="60-150k">R$60.000 – R$150.000</option>
-          <option value="150-500k">R$150.000 – R$500.000</option>
+          <option value="abaixo-50k">Abaixo de R$50.000</option>
+          <option value="50-100k">R$50.000 – R$100.000</option>
+          <option value="100-300k">R$100.000 – R$300.000</option>
+          <option value="300-500k">R$300.000 – R$500.000</option>
           <option value="acima-500k">Acima de R$500.000</option>
         </select>
         <span class="field-error" id="fat-err"></span>
